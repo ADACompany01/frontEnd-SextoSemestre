@@ -1,0 +1,24 @@
+﻿MATRIZ DE RISCO - SOFTWARE;;;;;;;;;
+;;;;;;;;;
+Vulnerabilidade;Tratamento;;;Risco-Chave;;Risco Inerente;;;
+;Tratamento;Ação;Responsável;Cód.;Descrição;Impacto;Probabilidade;Nível de Risco;Classificação
+Credenciais expostas no docker-compose.yml;Pendente;Migrar para variáveis de ambiente e secrets;DevOps;R001;JWT_SECRET e credenciais do banco hardcoded no docker-compose.yml (JWT_SECRET: ada_company_secret_key_2025 e DB_PASSWORD expostos);10;9;90;Crítico
+Rate Limiting não implementado;Pendente;Implementar @nestjs/throttler no app.module.ts;Backend Lead;R002;Sistema vulnerável a ataques de força bruta e DDoS. README menciona throttler mas não está configurado;9;8;72;Extremo
+CORS configurado com asterisco (*);Em mitigação;Remover '*' e definir origens permitidas específicas;Backend Lead;R003;main.ts linha 18 permite todas as origens durante desenvolvimento expondo a ataques CSRF;8;9;72;Extremo
+FuncionarioGuard com lógica incorreta;Pendente;Corrigir guard para permitir apenas funcionários;Backend Lead;R004;funcionario.guard.ts linhas 24-26 permitem tanto cliente quanto funcionário acessar rotas restritas;10;7;70;Extremo
+Helmet não implementado;Pendente;Adicionar helmet ao main.ts com CSP configurado;Backend Lead;R005;Headers de segurança HTTP ausentes. README menciona mas não está no código;7;9;63;Extremo
+Senha armazenada em texto plano no SQLite;Pendente;Implementar bcrypt no DatabaseService;Frontend Lead;R006;DatabaseService.ts insere senhas sem hash ('password123' em texto plano);10;6;60;Extremo
+JWT sem refresh token;Aceito;Avaliar implementação de refresh token;Product Owner;R007;Token expira em 1h sem mecanismo de renovação causando logout constante do usuário;5;10;50;Alto
+Swagger acessível sem autenticação;Pendente;Adicionar autenticação no Swagger ou restringir ao ambiente dev;Backend Lead;R008;Documentação Swagger em /api expõe estrutura completa da API publicamente;7;7;49;Alto
+AWS credentials hardcoded;Pendente;Usar AWS IAM roles ou variáveis de ambiente;DevOps;R009;docker-compose.yml contém AWS_ACCESS_KEY_ID e AWS_SECRET_ACCESS_KEY placeholder;9;5;45;Alto
+Arquivo .env não existe;Pendente;Criar .env e .env.example com documentação;DevOps;R010;Projeto sem arquivo .env configurado pode expor secrets ou falhar em produção;8;5;40;Alto
+Token JWT armazenado apenas em memória;Em mitigação;Implementar SecureStore do Expo para persistência;Frontend Lead;R011;ApiService armazena token em memória perdendo sessão ao recarregar o app;6;6;36;Médio
+Validação de senha fraca;Pendente;Adicionar validação de complexidade (maiúscula minúscula número);Backend Lead;R012;CreateClienteDto exige apenas 6 caracteres sem requisitos de complexidade;7;5;35;Médio
+Logs sensíveis expostos no console;Pendente;Remover console.log de produção usar Logger;Ambos;R013;ApiService e componentes expõem tokens e dados sensíveis no console.log;6;6;36;Médio
+CNPJ genérico em cadastro automático;Em mitigação;Validar CNPJ obrigatório ou usar UUID temporário;Backend Lead;R014;auth.service.ts linha 155 usa CNPJ '00.000.000/0000-00' podendo causar conflitos;5;7;35;Médio
+Ausência de plano de Backup e DR;Aceito;Documentar estratégia de backup do PostgreSQL e DynamoDB;DevOps;R015;Sem procedimentos documentados de backup disaster recovery e restore;9;3;27;Médio
+IP local hardcoded no frontend;Aceito;Usar variáveis de ambiente ou detecção automática;Frontend Lead;R016;api.config.ts contém LOCAL_IP hardcoded (192.168.50.58);3;8;24;Médio
+Interceptores de logging desabilitados;Pendente;Habilitar LoggingInterceptor e LoggingExceptionFilter;Backend Lead;R017;main.ts linhas 32-34 comentam interceptores impedindo auditoria adequada;6;4;24;Médio
+Dependências podem estar desatualizadas;Pendente;Executar npm audit e atualizar pacotes vulneráveis;DevOps;R018;Verificar vulnerabilidades conhecidas em dependências do package.json;7;3;21;Médio
+Lighthouse executa comandos do sistema;Mitigado;Validar input de URL e sanitizar antes de processar;Backend Lead;R019;lighthouse.service.ts executa Chrome podendo ser explorado com URLs maliciosas;8;2;16;Baixo
+Ausência de monitoramento em tempo real;Aceito;Implementar APM (Application Performance Monitoring);Product Owner;R020;Sistema sem alertas de incidentes de segurança ou performance;5;3;15;Baixo

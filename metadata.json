@@ -1,0 +1,5 @@
+{
+  "name": "ADA Company App",
+  "description": "A React Native application for ADA Company, featuring separate flows for clients and employees.",
+  "requestFramePermissions": []
+}

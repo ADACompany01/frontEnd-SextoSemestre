@@ -1,0 +1,74 @@
+{
+  "expo": {
+    "name": "ADA Company",
+    "slug": "ada-company",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/AdaHome.png",
+    "splash": {
+      "image": "./assets/AdaHome.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#667eea"
+    },
+    "splashScreen": {
+      "hideExponentText": true,
+      "hideInstructions": true,
+      "resizeMode": "contain"
+    },
+    "loading": {
+      "hideExponentText": true,
+      "hideInstructions": true,
+      "icon": "./assets/AdaHome.png",
+      "backgroundColor": "#667eea"
+    },
+    "developer": {
+      "tool": "expo-cli"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/AdaHome.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#667eea"
+      },
+      "infoPlist": {
+        "NSCameraUsageDescription": "Este app precisa acessar a câmera para tirar fotos de perfil",
+        "NSPhotoLibraryUsageDescription": "Este app precisa acessar a galeria para selecionar fotos de perfil"
+      }
+    },
+    "android": {
+      "package": "com.adacompany.app",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/AdaHome.png",
+        "backgroundColor": "#667eea"
+      },
+      "splash": {
+        "image": "./assets/AdaHome.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#667eea"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "extra": {},
+    "updates": {
+      "enabled": false
+    }
+  }
+}
