@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
       .replace(/ ponto /g, '.')
       .replace(/ barra /g, '/')
       .replace(/ dois pontos /g, ':')
-      .replace(/ traço /g, '-')
+      .replace(/ traÃ§o /g, '-')
       .replace(/ underline /g, '_')
       .replace(/\s+dot\s+/g, '.')
       .replace(/\s+slash\s+/g, '/');
@@ -66,7 +66,30 @@ const Dashboard = () => {
     return cleaned;
   };
 
-  const handleVoiceInput = () => {
+  const getSpeechErrorMessage = (error) => {
+    const errorType = error?.error || error?.name;
+
+    switch (errorType) {
+      case 'not-allowed':
+      case 'PermissionDeniedError':
+        return 'Permita o acesso ao microfone no navegador para capturar a voz.';
+      case 'service-not-allowed':
+        return 'O reconhecimento de voz precisa ser usado em localhost ou em uma página HTTPS.';
+      case 'no-speech':
+        return 'Nenhuma fala foi detectada. Tente novamente falando mais perto do microfone.';
+      case 'audio-capture':
+      case 'NotFoundError':
+        return 'Nenhum microfone foi encontrado. Verifique se ele está conectado e ativo.';
+      case 'network':
+        return 'Falha de conexão no serviço de reconhecimento de voz. Tente novamente em instantes.';
+      case 'aborted':
+        return '';
+      default:
+        return 'Não foi possível capturar a voz. Tente novamente.';
+    }
+  };
+
+  const handleVoiceInput = async () => {
     if (typeof window === 'undefined') return;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -78,6 +101,21 @@ const Dashboard = () => {
     if (isListening && recognitionRef.current) {
       recognitionRef.current.stop();
       return;
+    }
+
+    if (!window.isSecureContext) {
+      setSpeechError('O reconhecimento de voz precisa ser usado em localhost ou em uma página HTTPS.');
+      return;
+    }
+
+    if (navigator.mediaDevices?.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+      } catch (error) {
+        setSpeechError(getSpeechErrorMessage(error));
+        return;
+      }
     }
 
     const recognition = new SpeechRecognition();
@@ -98,8 +136,8 @@ const Dashboard = () => {
       }
     };
 
-    recognition.onerror = () => {
-      setSpeechError('Não foi possível capturar a voz. Tente novamente.');
+    recognition.onerror = (event) => {
+      setSpeechError(getSpeechErrorMessage(event));
     };
 
     recognition.onend = () => {
@@ -107,9 +145,14 @@ const Dashboard = () => {
     };
 
     recognitionRef.current = recognition;
-    recognition.start();
-  };
 
+    try {
+      recognition.start();
+    } catch (error) {
+      setIsListening(false);
+      setSpeechError(getSpeechErrorMessage(error));
+    }
+  };
   const renderAuditItems = (items) => {
     return items.length > 0 ? (
       <ul>
@@ -195,3 +238,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
