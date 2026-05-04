@@ -196,7 +196,7 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 - **Risco:** 90 (Impacto: 10 × Probabilidade: 9)
 - **Status:** ⏳ Pendente
 - **Descrição:** `JWT_SECRET`, senhas do banco e credenciais Azure hardcoded no `docker-compose.yml`
-- **Localização:** `backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/docker-compose.yml`
+- **Localização:** `backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/docker-compose.yml`
 - **Ação:** Migrar para variáveis de ambiente e usar Docker Secrets
 - **Responsável:** DevOps
 
@@ -238,7 +238,7 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 - **Risco:** 60 (Impacto: 10 × Probabilidade: 6)
 - **Status:** ⏳ Pendente
 - **Descrição:** `DatabaseService.ts` insere senhas mock sem hash (`'password123'` em texto plano)
-- **Localização:** `frontEnd-QuintoSemestre/services/DatabaseService.ts:124`
+- **Localização:** `frontEnd-SextoSemestre/services/DatabaseService.ts:124`
 - **Ação:** Implementar bcrypt no DatabaseService ou remover dados mock
 - **Responsável:** Frontend Lead
 
@@ -271,7 +271,7 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 - **Risco:** 36 (Impacto: 6 × Probabilidade: 6)
 - **Status:** 🔄 Em Mitigação
 - **Descrição:** `ApiService` armazena token em memória perdendo sessão ao recarregar
-- **Localização:** `frontEnd-QuintoSemestre/services/ApiService.ts:24`
+- **Localização:** `frontEnd-SextoSemestre/services/ApiService.ts:24`
 - **Ação:** Implementar SecureStore do Expo para persistência
 - **Responsável:** Frontend Lead
 
@@ -300,7 +300,7 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 - npm ou yarn
 - Expo CLI (`npm install -g @expo/cli`)
 - Expo Go app (para testar no celular)
-- Backend NestJS rodando (ver `backEnd-QuintoSemestre/README.md`)
+- Backend NestJS rodando (ver `backEnd-SextoSemestre/README.md`)
 
 ### Instalação
 
@@ -370,7 +370,7 @@ Antes de executar o frontend, certifique-se de que o backend está rodando e con
 
 ```bash
 # No diretório do backend
-cd ../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
+cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
 npm install
 npm run start:dev
 ```
@@ -382,13 +382,13 @@ Para poder fazer login com o funcionário de teste, você **DEVE** executar o se
 
 ```bash
 # No diretório do backend
-cd ../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
+cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
 npm run db:seed
 ```
 
 O seeder cria os usuários de teste (funcionário e cliente) no banco de dados. Sem executar o seeder, as credenciais de teste não funcionarão.
 
-Para mais detalhes sobre as credenciais, consulte: [README do Backend](../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md#-credenciais-de-teste-seeder) ou [CREDENCIAIS_TESTE.md](../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
+Para mais detalhes sobre as credenciais, consulte: [README do Backend](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md#-credenciais-de-teste-seeder) ou [CREDENCIAIS_TESTE.md](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
 
 ### Configuração da API
 
@@ -434,7 +434,7 @@ Para usar o app em modo produção:
 
 2. **Execute o seeder do backend** (OBRIGATÓRIO para usar credenciais de teste):
    ```bash
-   cd ../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
+   cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
    npm run db:seed
    ```
 
@@ -449,7 +449,7 @@ Para usar o app em modo produção:
   - **Offline:** Banco SQLite local (apenas para desenvolvimento/testes)
   - **Online:** Comunicação com backend NestJS (modo produção recomendado)
 - **Sem executar o seeder, as credenciais de teste do backend não funcionarão!**
-- Para mais detalhes, consulte: [CREDENCIAIS_TESTE.md](../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
+- Para mais detalhes, consulte: [CREDENCIAIS_TESTE.md](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
 
 ---
 
@@ -817,7 +817,7 @@ Abra um Pull Request descrevendo suas mudanças.
 ## 📚 Recursos Adicionais
 
 ### Documentação Relacionada
-- [Backend NestJS - README](../backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md)
+- [Backend NestJS - README](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md)
 - [Matriz de Riscos - CSV](../Modelo_Matriz_de_Riscos_SI.csv)
 - **📸 Sistema de Imagens Cross-Platform:**
   - [GUIA_IMAGENS_WEB.md](./GUIA_IMAGENS_WEB.md) - Guia completo de uso
