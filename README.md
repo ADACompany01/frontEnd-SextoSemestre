@@ -105,7 +105,7 @@ O projeto utiliza uma arquitetura moderna baseada em serviços Azure para garant
 
 ### 📊 Diagrama de Arquitetura
 
-![Diagrama de Infraestrutura Azure](./assets/DiagramaAdaCompany.png)
+![Diagrama de Infraestrutura Azure](./assets/DiagramaAdaCompany.drawio.png)
 
 ### 🏗️ Componentes da Infraestrutura
 
