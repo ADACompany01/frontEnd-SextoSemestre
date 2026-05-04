@@ -1,0 +1,118 @@
+@import "../../vars.css";
+
+.container-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  background: linear-gradient(360deg, #576cbc 20%, #4f51d4 80%);
+  box-shadow: 10px 10px 20px 0 #00000054;
+  padding: 18px 24px;
+  width: 30%;
+  height: 570px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.image {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.title {
+  font-size: 22px;
+  /* Tamanho consistente para todos os títulos */
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 16px;
+  /* Tamanho consistente para todas as descrições */
+  font-weight: 400;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.skills {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  justify-content: center;
+}
+
+.skill {
+  font-size: 14px;
+  /* Tamanho consistente para todas as habilidades */
+  font-weight: 400;
+  border-radius: 100px;
+  background: #19366d57;
+  padding: 4px 12px;
+}
+
+.links {
+  width: 100%;
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 16px;
+  /* Tamanho consistente para os links */
+  font-weight: 600;
+  border-radius: 100px;
+  background: #fff;
+  color: #4f51d4;
+  padding: 6px 16px;
+}
+
+.link:hover {
+  background-color: #0b2447;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .container-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+    padding: 0;
+    margin: 0;
+    padding-inline:0;
+    scroll-padding-inline: 16px;
+  }
+
+  .container-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .container {
+    flex: 0 0 100%;
+    width: 90%;
+    min-width: 100%;
+    scroll-snap-align: start;
+    margin-right:0;
+    justify-content: start;
+  }
+}

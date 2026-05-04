@@ -1,0 +1,78 @@
+.container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.red {
+  border-left-color: #e63946;
+}
+
+.green {
+  border-left-color: #2a9d8f;
+}
+
+.imageWrapper {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.exampleImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  max-height: 180px;
+  border-radius: 8px;
+}
+
+h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+p {
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}

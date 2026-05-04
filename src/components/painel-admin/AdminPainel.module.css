@@ -1,0 +1,132 @@
+:root {
+  --purple: #4f51d4;
+  --blue-dark: #19376d;
+  --white: #fff;
+  --gray-light: #f5f7ff;
+  --gray-medium: #b0b8d9;
+  --gray-dark: #2e3a59;
+  --red: #e63946;
+  --green: #2a9d8f;
+  --yellow: #f4a261;
+}
+
+.container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem;
+  background-color: var(--gray-light);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(31, 38, 135, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--gray-dark);
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 1.8rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(25, 55, 109, 0.2);
+}
+
+.table th,
+.table td {
+  padding: 1rem 1.4rem;
+  text-align: left;
+  border-bottom: 1px solid var(--gray-medium);
+  font-size: 1rem;
+}
+
+.table th {
+  background-color: var(--purple);
+  color: var(--white);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.table tr:hover {
+  background-color: var(--gray-light);
+  transition: background-color 0.25s ease;
+}
+
+.status {
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  display: inline-block;
+  text-transform: capitalize;
+  font-size: 0.95rem;
+  user-select: none;
+}
+
+.status.em_analise {
+  background-color: #f4a261;
+  color: #6b4100;
+}
+
+.status.em_andamento {
+  background-color: var(--blue-dark);
+  color: var(--white);
+}
+
+.status.aprovado {
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.status.cancelado {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.status.concluido {
+  background-color: var(--purple);
+  color: var(--white);
+}
+
+.selectStatus {
+  padding: 0.4rem 0.8rem;
+  border: 1.8px solid var(--gray-medium);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: var(--gray-dark);
+  cursor: pointer;
+  font-weight: 600;
+  transition: border-color 0.3s ease;
+}
+
+.selectStatus:hover,
+.selectStatus:focus {
+  border-color: var(--purple);
+  outline: none;
+}
+
+/* Responsividade */
+@media (max-width: 650px) {
+  .table th,
+  .table td {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .container {
+    padding: 1rem 1.5rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+}

@@ -1,0 +1,133 @@
+@import "../../vars.css";
+
+.container {
+  position: relative;
+  background-color: #19376d;
+  border-radius: 15px;
+  padding: 73px;
+  margin-top: 2em;
+  z-index: 1;
+  margin-left: 10%;
+  margin-right: 10%;
+
+}
+
+.title {
+  color: var(--color-text);
+  font-size: 35px;
+  font-weight: 700;
+  letter-spacing: 1.75px;
+  text-transform: uppercase;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+}
+
+.aboutImage {
+  width: 50%;
+  flex: 1 1 300px;
+}
+
+.aboutItems {
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 1 1 400px;
+}
+
+.aboutItem {
+  display: flex;
+  height: 120px;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  border-radius: 20px;
+  list-style: none;
+  padding: 25px;
+  background-image: linear-gradient(90deg,
+      rgba(165, 215, 232, 0.42) 0%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  transition: 0.4s;
+  gap: 2em;
+}
+
+.aboutItem:hover {
+  background-size: 100% 100%;
+}
+
+.aboutItem h3 {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.aboutItem p {
+  font-size: 25px;
+}
+
+.iconList {
+  color: aliceblue;
+  width: 3em;
+  margin-right: 1em;
+}
+
+@media screen and (max-width: 830px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    padding-right: 0;
+    align-items: center;
+  }
+
+  .content {
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+
+  .aboutItems {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding: 16px 0;
+    width: 95%;
+    flex:none;
+  }
+
+  .aboutItem {
+    min-width: 80vw;
+    width: 100%;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .aboutItem h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.25em;
+  }
+
+  .aboutItem p {
+    font-size: 1em;
+  }
+
+  .aboutItemText{
+    margin-left: 0.2em;
+  }
+
+  .aboutImage {
+    width: 90%;
+  }
+}

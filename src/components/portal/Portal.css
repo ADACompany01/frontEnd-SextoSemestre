@@ -1,0 +1,423 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.dashboard-title {
+  font-size: 24px;
+  color: #0b2447;
+}
+
+.dashboard-input {
+  width: 100%;
+  max-width: 700px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+.dashboard-input-row {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.dashboard-voice-button {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-voice-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.dashboard-voice-error {
+  color: #d9534f;
+  margin: 0;
+}
+
+.dashboard-button {
+  max-width: 200px;
+}
+
+.dashboard-result {
+  margin-top: 20px;
+  color: #0b2447;
+}
+
+.dashboard-recommendation {
+  margin-top: 10px;
+  background-color: #f4f4f4;
+  padding: 12px 16px;
+  border-radius: 8px;
+  max-width: 600px;
+  color: #0b2447;
+}
+
+
+.portal-container {
+  display: flex;
+  height: 100vh;
+}
+
+.portal-sidebar {
+  width: 250px;
+  background-color: #4f51d4;
+  color: white;
+  padding: 20px;
+  height: 1200px;
+}
+
+.portal-sidebar h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.portal-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portal-nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.portal-nav a:hover {
+  color: #0b2447;
+}
+
+.portal-main {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+.portal-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.portal-dashboard {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.portal-card {
+  background: #f4f4f4;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.portal-card h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #0b2447;
+}
+
+.portal-card p {
+  font-size: 24px;
+  color: #4f51d4;
+  margin: 5px 0 0;
+}
+
+.portal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.portal-button {
+  background-color: #4f51d4;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portal-table thead {
+  background-color: #0b2447;
+  color: white;
+}
+
+.portal-table th,
+.portal-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.portal-link {
+  background: none;
+  border: none;
+  color: #4f51d4;
+  cursor: pointer;
+}
+
+/* Estilos para a seção Problemas Encontrados */
+.problemas-encontrados {
+  border: 1px solid #f2c7c7;
+  background-color: #fcf2f2;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.problemas-encontrados-title {
+  font-size: 18px;
+  color: #c73e3e;
+  margin-top: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.problemas-lista {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.problema-item {
+  border-top: 1px solid #f2c7c7;
+  padding: 15px 0;
+}
+
+.problema-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.problema-titulo {
+  font-weight: bold;
+  color: #c73e3e;
+  margin: 0 0 5px 0;
+}
+
+.problema-descricao p {
+  margin: 0;
+  color: #333;
+}
+
+.problema-descricao a {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.problema-descricao a:hover {
+  text-decoration: none;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  margin: 20px auto 0 auto;
+  box-sizing: border-box;
+}
+
+.dashboard-result,
+.dashboard-recommendation,
+.dashboard-details {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.dashboard-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Estilos para o contêiner de resultados do Lighthouse */
+.lighthouse-result-container {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.lighthouse-header {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.lighthouse-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.lighthouse-header p {
+    margin: 0;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+
+.lighthouse-score-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  border: 5px solid #4caf50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.lighthouse-score-circle span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.accessibility-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #333;
+}
+
+.recommendation-text {
+  max-width: 600px;
+  margin: 15px auto;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Estilos para a seção de problemas encontrados */
+.problemas-encontrados-container {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 15px;
+  text-align: left;
+}
+
+.problemas-encontrados-title {
+  font-size: 1.2rem;
+  color: #d9534f;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.warning-icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.problemas-encontrados-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.problemas-encontrados-container li {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.problemas-encontrados-container li:last-child {
+  border-bottom: none;
+}
+
+.problem-title {
+  font-weight: bold;
+  color: #d9534f; /* Tom de vermelho para o título do problema */
+}
+
+.problem-description {
+  color: #333;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .portal-sidebar {
+    display: none;
+  }
+
+  .portal-main {
+    padding: 10px;
+  }
+
+  .dashboard-title {
+    font-size: 20px;
+  }
+
+  .dashboard-input {
+    width: 100%;
+  }
+
+  .dashboard-input-row {
+    flex-direction: column;
+    max-width: 700px;
+  }
+
+  .dashboard-button {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dashboard-result,
+  .dashboard-recommendation,
+  .dashboard-details {
+    padding: 10px;
+  }
+
+  .problema-titulo {
+    font-size: 16px;
+  }
+
+  .problemas-encontrados-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-title {
+    font-size: 18px;
+  }
+
+  .portal-button {
+    padding: 10px;
+    font-size: 14px;
+  }
+}

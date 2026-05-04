@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Letras",
+    "imageSrc": "skills/Letras.png"
+  },
+  {
+    "title": "Cores",
+    "imageSrc": "skills/Cores.png"
+  },
+  {
+    "title": "Fácil",
+    "imageSrc": "skills/Facil.png"
+  },
+  {
+    "title": "Visual",
+    "imageSrc": "skills/Visual.png"
+  },
+  {
+    "title": "Textos",
+    "imageSrc": "skills/Textos.png"
+  },
+  {
+    "title": "Sons",
+    "imageSrc": "skills/Sons.png"
+  },
+  {
+    "title": "Acessível",
+    "imageSrc": "skills/Acessivel.png"
+  }
+]

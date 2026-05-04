@@ -1,37 +1,38 @@
 {
-  "name": "ada-company-app",
+  "name": "react-portfolio",
   "private": true,
   "version": "0.0.0",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
     "dev": "vite",
     "build": "vite build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/react": "~19.1.10",
-    "axios": "^1.7.7",
-    "expo": "~54.0.25",
-    "expo-document-picker": "^14.0.7",
-    "expo-file-system": "~19.0.19",
-    "expo-image-picker": "^17.0.8",
-    "expo-sqlite": "~16.0.9",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "react-native": "0.81.5",
-    "react-native-safe-area-context": "~5.6.0",
-    "react-native-signature-canvas": "^5.0.1",
-    "react-native-svg": "15.12.1",
-    "react-native-web": "^0.21.0"
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/outfit": "^5.0.8",
+    "@fontsource/roboto": "^5.0.8",
+    "@mui/icons-material": "^6.1.5",
+    "@mui/material": "^6.1.5",
+    "axios": "^1.10.0",
+    "bootstrap": "^5.3.3",
+    "jwt-decode": "^4.0.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.10.5",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.30.1"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.9.2",
-    "vite": "^6.2.0"
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "vite": "^4.5.14"
   }
 }
+

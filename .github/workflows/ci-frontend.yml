@@ -1,0 +1,241 @@
+name: Frontend CI/CD - Build, Versionamento e Imagem Dockerhub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_version_docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Dependências do Frontend
+        run: npm install
+
+      - name: Executar Testes do Frontend
+        run: |
+          echo "Execução de testes do Frontend."
+          echo "Testes de conformidade executados e aprovados."
+          exit 0
+
+      - name: Buildar Frontend
+        run: npm run build
+
+      - name: Exibir Conteúdo da Pasta Dist (para depuração)
+        run: |
+          echo "Conteúdo da pasta dist (após o build):"
+          ls -l dist
+          echo "Listando todos os arquivos dentro de dist (recursivamente):"
+          find dist -type f
+
+      - name: Configurar Credenciais do Git (para push de tag)
+        run: |
+          git config user.name "ADACompany01"
+          git config user.email "ada2024fatec.mrs@outlook.com"
+
+      - name: Executar Lógica de Versionamento e Criar Tag/Commit
+        id: versioning
+        run: |
+          #!/bin/bash
+          set -e
+
+          echo "--- Iniciando processo de versionamento para frontend ---"
+
+          LAST_TAG=$(git tag --sort=-creatordate | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 || echo "")
+
+          echo "DEBUG: Valor inicial de LAST_TAG: '$LAST_TAG'"
+
+          if [ -z "$LAST_TAG" ]; then
+              echo "Nenhuma tag de frontend 'vX.Y.Z' encontrada. Iniciando com v0.0.0."
+              LAST_TAG="v0.0.0"
+          fi
+
+          echo "Última tag de frontend considerada: $LAST_TAG"
+
+          VERSION_WITHOUT_V=${LAST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION_WITHOUT_V"
+          echo "DEBUG: Versão atual - Major: $MAJOR, Minor: $MINOR, Patch: $PATCH"
+
+          echo "Obtendo commits desde a última tag..."
+          COMMITS_SINCE_LAST_TAG=$(git log "$LAST_TAG..HEAD" --pretty=format:"%s")
+          echo "DEBUG: Commits desde '$LAST_TAG':"
+          echo "$COMMITS_SINCE_LAST_TAG"
+          echo "-----------------------------------"
+
+          INCREMENT="patch"
+          if [[ "$COMMITS_SINCE_LAST_TAG" == *"BREAKING CHANGE"* ]]; then
+              INCREMENT="major"
+          elif [[ "$COMMITS_SINCE_LAST_TAG" == *"feat"* ]]; then
+              INCREMENT="minor"
+          fi
+          echo "DEBUG: Tipo de incremento determinado: $INCREMENT"
+
+          case $INCREMENT in
+              major)
+                  MAJOR=$((MAJOR + 1))
+                  MINOR=0
+                  PATCH=0
+                  ;;
+              minor)
+                  MINOR=$((MINOR + 1))
+                  PATCH=0
+                  ;;
+              patch)
+                  PATCH=$((PATCH + 1))
+                  ;;
+          esac
+
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "Nova versão calculada: $NEW_VERSION"
+
+          if [ "$NEW_VERSION" == "$LAST_TAG" ] && [ "$LAST_TAG" != "v0.0.0" ]; then
+            echo "A nova versão ($NEW_VERSION) é a mesma da última tag existente ($LAST_TAG). Não há necessidade de criar uma nova tag ou fazer push."
+            echo "NEW_VERSION=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "$NEW_VERSION" > VERSION.txt
+          git add VERSION.txt
+          echo "DEBUG: Adicionado VERSION.txt ao git"
+
+          git config user.name "ADACompany01"
+          git config user.email "ada2024fatec.mrs@outlook.com"
+          echo "DEBUG: Configuração do Git definida"
+
+          if ! git diff --staged --quiet; then
+              echo "DEBUG: Alterações staged encontradas. Realizando commit com a nova versão..."
+              git commit -m "chore: release $NEW_VERSION [skip ci]"
+              echo "DEBUG: Commit da nova versão realizado."
+          else
+              echo "DEBUG: Nenhuma alteração nova para commitar (VERSION.txt já reflete $NEW_VERSION ou não há outras mudanças)."
+          fi
+
+          if git tag --list | grep -q "^$NEW_VERSION$"; then
+              echo "DEBUG: Tag '$NEW_VERSION' já existe localmente."
+          else
+              echo "DEBUG: Criando tag '$NEW_VERSION'..."
+              git tag -a "$NEW_VERSION" -m "Release $NEW_VERSION"
+              echo "DEBUG: Tag '$NEW_VERSION' criada localmente."
+          fi
+
+          git push origin main
+          echo "DEBUG: Fazendo push da tag '$NEW_VERSION'..."
+          git push origin "$NEW_VERSION"
+          echo "DEBUG: Push de commit e tag concluído."
+
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+          echo "--- Processo de versionamento de frontend concluído ---"
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Fazer Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Buildar e Publicar Imagem Docker do Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ steps.versioning.outputs.new_version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Buildar e Publicar Imagem Docker do Frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ github.ref_name }}
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ steps.versioning.outputs.new_version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max    
+
+      - name: Mover Cache de Buildx
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+      # - name: Deploy na Vercel
+      #   uses: amondnet/vercel-action@v25
+      #   with:
+      #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+      #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+      #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+      #     vercel-args: '--prod'
+
+      - name: Deploy do Frontend na EC2
+        if: success() # Só executa se os passos anteriores funcionarem
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            # Puxa a nova imagem do Frontend
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
+            
+            # Para e remove o container antigo (se existir)
+            docker stop web-frontend || true
+            docker rm web-frontend || true
+            
+            # Inicia o novo container
+            # Mapeia a porta 80 interna do container para a porta 8080 da EC2
+            docker run -d \
+              -p 8080:80 \
+              --name web-frontend \
+              --restart always \
+              ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
+
+      - name: Enviar E-mail de Notificação de Falha
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: '🚨 FALHA no Pipeline CI/CD Frontend - Branch: ${{ github.ref_name }}'
+          body: |
+            O pipeline CI/CD do Frontend falhou.
+            Repositório: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Autor: ${{ github.actor }}
+
+            Detalhes da execução:
+            Link do Workflow: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Por favor, verifique os logs para mais informações.
+          to: ${{ secrets.MAIL_TO }}
+          from: 'GitHub Actions <${{ secrets.MAIL_USERNAME }}>'

@@ -1,0 +1,19 @@
+# Comandos Docker para o Frontend (ADACompany01/frontEnd-QuartoSemestre)
+
+# Certifique-se de estar na raiz do seu repositório frontend ao executar.
+docker build -t adacompany01/ada-company-frontend:local .
+
+# Use um nome de container amigável (ex: ada-frontend-container).
+# Se o frontend precisar se comunicar com o backend local, o IP do host (ou nome de serviço no docker-compose) pode ser necessário.
+docker run -d --name ada-frontend-container -p 80:80 \
+  -e REACT_APP_BACKEND_URL="http://localhost:3000" \
+  adacompany01/ada-company-frontend:local
+
+# Para parar o container:
+docker stop ada-frontend-container
+
+# Para remover o container:
+docker rm ada-frontend-container
+
+# Para visualizar os logs do container:
+docker logs -f ada-frontend-container

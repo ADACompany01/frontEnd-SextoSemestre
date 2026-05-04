@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Clientes",
+    "imageSrc": "skills/user.png",
+    "link": "../SignUpClient"
+  },
+  {
+    "title": "Funcionário",
+    "imageSrc": "skills/func.png",
+    "link": "../signupfuncionario"
+  },
+  {
+    "title": "Orçamento",
+    "imageSrc": "skills/orcamento.png",
+    "link": "../signuporcamento"
+  },
+  {
+    "title": "Serviço",
+    "imageSrc": "skills/servico.png",
+    "link": "../signupservico"
+  }
+]

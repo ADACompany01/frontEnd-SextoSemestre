@@ -1,882 +1,461 @@
-# ADA Company - Frontend Mobile
-
 <p align="center">
-  <img src="./assets/AdaHome.png" alt="ADA Company Logo" width="400"/>
+  <img src="assets/hero/AdaHome.png" alt="ADA Company Banner" width="600"/>
 </p>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
-  <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
-  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
-</p>
+# ADA Company - Projeto Final
 
 <p align="center">
-  <strong>Sistema de Gestão de Acessibilidade Web</strong>
+  <a href="https://newadacompany-3drnxk22f-ada-companys-projects.vercel.app/"><img src="https://img.shields.io/badge/Frontend-Online-green" /></a>
+  <a href="https://backend-adacompany.onrender.com/"><img src="https://img.shields.io/badge/Backend-Online-blue" /></a>
 </p>
 
 ---
 
-Uma aplicação **React Native** desenvolvida com **Expo** para avaliação e gestão de acessibilidade web, seguindo o padrão arquitetural **MVC (Model-View-Controller)** com integração ao backend NestJS.
+## 🗂️ Sumário
 
-## 📋 Sumário
-
-- [Arquitetura MVC](#-arquitetura-mvc)
-- [Infraestrutura e Arquitetura Azure](#-infraestrutura-e-arquitetura-azure)
-- [Requisitos Funcionais](#-requisitos-funcionais)
-- [Requisitos Não Funcionais](#-requisitos-não-funcionais)
-- [Matriz de Riscos de Segurança](#-matriz-de-riscos-de-segurança)
-- [Como Executar](#-como-executar)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [Credenciais de Teste](#-credenciais-de-teste)
-
----
-
-## 🏗️ Arquitetura MVC
-
-O projeto foi refatorado para seguir o padrão MVC, organizando o código em camadas bem definidas:
-
-### 📁 Estrutura do Projeto
-
-```
-├── models/                    # Camada de Dados e Regras de Negócio
-│   ├── user/
-│   │   └── UserModel.ts      # Modelo de usuários e autenticação
-│   ├── request/
-│   │   └── RequestModel.ts   # Modelo de solicitações de acessibilidade
-│   ├── evaluation/
-│   │   └── EvaluationModel.ts # Modelo de avaliações de sites
-│   ├── image/
-│   │   └── ImageModel.ts     # Modelo de gerenciamento de imagens
-│   └── index.ts              # Exportações centralizadas dos models
-│
-├── controllers/               # Camada de Controle e Lógica de Negócio
-│   ├── auth/
-│   │   └── AuthController.ts # Controlador de autenticação
-│   ├── request/
-│   │   └── RequestController.ts # Controlador de solicitações
-│   ├── evaluation/
-│   │   └── EvaluationController.ts # Controlador de avaliações
-│   ├── image/
-│   │   └── ImageController.ts # Controlador de imagens e fotos
-│   └── index.ts              # Exportações centralizadas dos controllers
-│
-├── views/                     # Camada de Apresentação (UI)
-│   ├── components/            # Componentes reutilizáveis
-│   │   ├── Icons.native.tsx  # Ícones SVG
-│   │   ├── StarRating.native.tsx # Componente de avaliação por estrelas
-│   │   ├── CircularProgress.native.tsx # Componente de progresso circular
-│   │   └── Timeline.native.tsx # Componente de timeline
-│   ├── screens/               # Telas da aplicação
-│   │   ├── LoginScreen.native.tsx # Tela de login
-│   │   ├── RegisterScreen.native.tsx # Tela de cadastro
-│   │   ├── ClientDashboard.native.tsx # Dashboard do cliente
-│   │   ├── EmployeeDashboard.native.tsx # Dashboard do funcionário
-│   │   ├── EvaluationScreen.native.tsx # Tela de avaliação
-│   │   └── PlanSelectionScreen.native.tsx # Tela de seleção de plano
-│   └── index.ts              # Exportações centralizadas das views
-│
-├── services/                  # Serviços de Infraestrutura
-│   ├── ApiService.ts         # Cliente HTTP para comunicação com backend
-│   ├── DatabaseService.ts    # Serviço de banco de dados SQLite local
-│   └── PhotoSyncService.ts   # Sincronização de fotos com backend
-│
-├── config/                    # Configurações
-│   └── api.config.ts         # Configuração de endpoints e URLs
-│
-├── utils/                     # Utilitários
-│   └── ImageUtils.ts         # Funções auxiliares para imagens
-│
-├── styles/                    # Estilos globais
-│
-├── App.tsx                    # Componente principal da aplicação
-├── index.js                   # Ponto de entrada para React Native
-├── app.json                   # Configuração do Expo
-├── eas.json                   # Configuração Expo Application Services
-├── tsconfig.json              # Configuração TypeScript
-└── package.json               # Dependências e scripts
-```
+1. [Sobre o Projeto](#sobre-o-projeto)
+2. [Requisitos Funcionais](#requisitos-funcionais)
+3. [Demonstração Visual](#demonstração-visual)
+4. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+5. [Organização dos Repositórios](#organização-dos-repositórios)
+6. [Como Executar](#como-executar)
+7. [Integração e Entrega Contínua (CI/CD)](#integração-e-entrega-contínua-cicd)
+8. [Documentação Docker](#documentação-docker)
+9. [Estrutura do Banco de Dados](#estrutura-do-banco-de-dados)
+10. [Documentação da API](#documentação-da-api)
+11. [Exemplos de Integração](#exemplos-de-integração)
+12. [Links das Aplicações Publicadas](#links-das-aplicações-publicadas)
+13. [Integrantes](#integrantes)
+14. [Licença](#licença)
+15. [Referências e Suporte](#referências-e-suporte)
 
 ---
 
-## ☁️ Infraestrutura e Arquitetura Azure
+## ✨ Sobre o Projeto
 
-O projeto utiliza uma arquitetura baseada em Azure Virtual Machine com containers Docker, utilizando serviços essenciais da Azure para armazenamento e monitoramento. para garantir escalabilidade, segurança e disponibilidade.
-
-### 📊 Diagrama de Arquitetura
-
-![Diagrama de Infraestrutura Azure](./assets/DiagramaAdaCompany.drawio.png)
-
-### 🏗️ Componentes da Infraestrutura
-
-#### **Frontend (React Native + Expo)**
-- Aplicativo mobile multiplataforma
-- Comunicação via HTTPS com backend
-- Banco SQLite local para cache
-- Sincronização em tempo real
-
-#### **Backend API (NestJS)**
-- API RESTful com documentação Swagger
-- Autenticação JWT
-- Validação de dados com class-validator
-- Logging centralizado
-
-#### **Banco de Dados Relacional (PostgreSQL)**
-- Armazenamento de dados estruturados
-- Tabelas: Usuários, Clientes, Funcionários, Contratos, Orçamentos
-- Backups manuais ou automatizados via script
-- Persistência via Docker volumes
-
-#### **Banco NoSQL (MongoDB)**
-- Sistema de logs da aplicação
-- Alta performance para escritas
-- Escalabilidade automática
-- Time-to-Live (TTL) para limpeza automática
-
-#### **Serviços Azure Utilizados**
-- 🔐 Microsoft Entra ID (IAM da Azure)
-- 📊 Azure Monitor (Logs e métricas)
-- 🌐 Azure DNS
-- 🔒 Azure Key Vault (Secrets)
-- 📦 Azure Blob Storage (Arquivos/PDFs)
-- 🖥️ Azure Virtual Machine (Compute)
-
-### 🔄 Fluxo de Dados
-
-1. **Cliente Mobile** → Requisição HTTPS → **API Backend**
-2. **API Backend** → Consulta/Atualiza → **PostgreSQL**
-3. **API Backend** → Registra logs → **Azure Monittor / Log Analytcs**
-4. **PostgreSQL** ← Sincronização ← **SQLite Local** (modo offline)
+Sistema completo para gestão de serviços, clientes e funcionários, com interface web moderna e API robusta. O sistema foi desenvolvido como projeto final do sexto semestre, utilizando arquitetura em camadas, containers Docker e API RESTful documentada.
 
 ---
 
-## 📋 Requisitos Funcionais
+## ✅ Requisitos Funcionais
 
-### RF01 - Autenticação de Usuários
-### RF02 - Avaliação de Acessibilidade
-### RF03 - Gestão de Solicitações
-### RF04 - Dashboard de Cliente
-### RF05 - Dashboard de Funcionário
-### RF06 - Seleção de Planos
-### RF07 - Gerenciamento de Imagens
-### RF08 - Persistência Local de Dados
+- **Cadastro de Usuários:**
+  O sistema deve permitir o cadastro de diferentes tipos de usuários (clientes, funcionários).
 
----
+- **Autenticação e Autorização:**
+  O sistema deve permitir login seguro e garantir que apenas usuários autenticados acessem funcionalidades restritas.
 
-## 🔒 Requisitos Não Funcionais
+- **Gestão de Serviços:**
+  O sistema deve permitir o cadastro, edição, exclusão e listagem de serviços oferecidos pela empresa.
 
-### RNF01 - Desempenho
-### RNF02 - Usabilidade
-### RNF03 - Compatibilidade
-### RNF04 - Segurança
-### RNF05 - Disponibilidade
-### RNF06 - Manutenibilidade
-### RNF07 - Escalabilidade
-### RNF08 - Acessibilidade
+- **Gestão de Clientes:**
+  O sistema deve permitir o cadastro, edição, exclusão e listagem de clientes.
 
----
+- **Gestão de Funcionários:**
+  O sistema deve permitir o cadastro, edição, exclusão e listagem de funcionários.
 
-## 🛡️ Matriz de Riscos de Segurança
+- **Orçamento:**
+  O sistema deve permitir que clientes solicitem orçamentos e acompanhem o status.
 
-Esta seção apresenta os **20 riscos de segurança identificados** através de análise detalhada do código-fonte do projeto (backend NestJS + frontend React Native).
+- **Dashboard:**
+  O sistema deve apresentar um painel com informações resumidas (quantidade de clientes, serviços, orçamentos, etc).
 
-### 📊 Visão Geral
+- **Integração Frontend/Backend:**
+  O frontend deve consumir a API do backend para todas as operações de CRUD.
 
-| Classificação | Quantidade | Nível de Risco |
-|---------------|------------|----------------|
-| 🔴 **Crítico** | 1 | 90 |
-| 🟠 **Extremo** | 5 | 60-79 |
-| 🟡 **Alto** | 4 | 40-59 |
-| 🟢 **Médio** | 9 | 15-39 |
-| ⚪ **Baixo** | 2 | < 15 |
+- **Notificações:**
+  O cliente deve acompanhar o status de pedidos através da página de acesso no frontend.
 
-### 🔴 Riscos Críticos (Ação Imediata Necessária)
-
-#### R001 - Credenciais Expostas no docker-compose.yml
-- **Risco:** 90 (Impacto: 10 × Probabilidade: 9)
-- **Status:** ⏳ Pendente
-- **Descrição:** `JWT_SECRET`, senhas do banco e credenciais Azure hardcoded no `docker-compose.yml`
-- **Localização:** `backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/docker-compose.yml`
-- **Ação:** Migrar para variáveis de ambiente e usar Docker Secrets
-- **Responsável:** DevOps
-
-### 🟠 Riscos Extremos (Alta Prioridade)
-
-#### R002 - Rate Limiting Não Implementado
-- **Risco:** 72 (Impacto: 9 × Probabilidade: 8)
-- **Status:** ⏳ Pendente
-- **Descrição:** Sistema vulnerável a ataques de força bruta e DDoS. README menciona throttler mas não está configurado
-- **Localização:** `src/app.module.ts`
-- **Ação:** Implementar `@nestjs/throttler` no app.module.ts
-- **Responsável:** Backend Lead
-
-#### R003 - CORS Configurado com Asterisco (*)
-- **Risco:** 72 (Impacto: 8 × Probabilidade: 9)
-- **Status:** 🔄 Em Mitigação
-- **Descrição:** `main.ts` linha 18 permite todas as origens durante desenvolvimento expondo a ataques CSRF
-- **Localização:** `src/main.ts:18`
-- **Ação:** Remover `*` e definir origens permitidas específicas
-- **Responsável:** Backend Lead
-
-#### R004 - FuncionarioGuard com Lógica Incorreta
-- **Risco:** 70 (Impacto: 10 × Probabilidade: 7)
-- **Status:** ⏳ Pendente
-- **Descrição:** Guard permite tanto cliente quanto funcionário acessar rotas restritas
-- **Localização:** `funcionario.guard.ts:24-26`
-- **Ação:** Corrigir guard para permitir apenas funcionários
-- **Responsável:** Backend Lead
-
-#### R005 - Helmet Não Implementado
-- **Risco:** 63 (Impacto: 7 × Probabilidade: 9)
-- **Status:** ⏳ Pendente
-- **Descrição:** Headers de segurança HTTP ausentes. README menciona mas não está no código
-- **Localização:** `src/main.ts`
-- **Ação:** Adicionar helmet ao main.ts com CSP configurado
-- **Responsável:** Backend Lead
-
-#### R006 - Senha Armazenada em Texto Plano no SQLite
-- **Risco:** 60 (Impacto: 10 × Probabilidade: 6)
-- **Status:** ⏳ Pendente
-- **Descrição:** `DatabaseService.ts` insere senhas mock sem hash (`'password123'` em texto plano)
-- **Localização:** `frontEnd-SextoSemestre/services/DatabaseService.ts:124`
-- **Ação:** Implementar bcrypt no DatabaseService ou remover dados mock
-- **Responsável:** Frontend Lead
-
-### 🟡 Riscos Altos
-
-#### R007 - JWT sem Refresh Token
-- **Risco:** 50 (Impacto: 5 × Probabilidade: 10)
-- **Status:** ✅ Aceito
-- **Descrição:** Token expira em 1h sem mecanismo de renovação causando logout constante
-- **Ação:** Avaliar implementação de refresh token
-- **Responsável:** Product Owner
-
-#### R008 - Swagger Acessível sem Autenticação
-- **Risco:** 49 (Impacto: 7 × Probabilidade: 7)
-- **Status:** ⏳ Pendente
-- **Descrição:** Documentação Swagger em `/api` expõe estrutura completa da API publicamente
-- **Ação:** Adicionar autenticação no Swagger ou restringir ao ambiente dev
-- **Responsável:** Backend Lead
-
-#### R009 - Azure Credentials Hardcoded
-- **Risco:** 45 (Impacto: 9 × Probabilidade: 5)
-- **Status:** ⏳ Pendente
-- **Descrição:** `docker-compose.yml` contém placeholders de Azure_ACCESS_KEY_ID
-- **Ação:** Usar Azure IAM roles ou variáveis de ambiente
-- **Responsável:** DevOps
-
-### 🟢 Riscos Médios
-
-#### R010 - Token JWT Armazenado Apenas em Memória
-- **Risco:** 36 (Impacto: 6 × Probabilidade: 6)
-- **Status:** 🔄 Em Mitigação
-- **Descrição:** `ApiService` armazena token em memória perdendo sessão ao recarregar
-- **Localização:** `frontEnd-SextoSemestre/services/ApiService.ts:24`
-- **Ação:** Implementar SecureStore do Expo para persistência
-- **Responsável:** Frontend Lead
-
-#### R011 - Validação de Senha Fraca
-- **Risco:** 35 (Impacto: 7 × Probabilidade: 5)
-- **Status:** ⏳ Pendente
-- **Descrição:** CreateClienteDto exige apenas 6 caracteres sem requisitos de complexidade
-- **Localização:** `create-cliente.dto.ts:44`
-- **Ação:** Adicionar validação de complexidade (maiúscula, minúscula, número)
-- **Responsável:** Backend Lead
-
-#### R012 - Logs Sensíveis Expostos no Console
-- **Risco:** 36 (Impacto: 6 × Probabilidade: 6)
-- **Status:** ⏳ Pendente
-- **Descrição:** ApiService e componentes expõem tokens e dados sensíveis via console.log
-- **Ação:** Remover console.log de produção, usar Logger adequado
-- **Responsável:** Ambos (Backend + Frontend)
-
-#### R013-R019 - Outros Riscos Médios e Baixos
-
-## 🚀 Como Executar
-
-### Pré-requisitos
-
-- Node.js (versão 16 ou superior)
-- npm ou yarn
-- Expo CLI (`npm install -g @expo/cli`)
-- Expo Go app (para testar no celular)
-- Backend NestJS rodando (ver `backEnd-SextoSemestre/README.md`)
-
-### Instalação
-
-```bash
-# Clone o repositório
-git clone <url-do-repositorio>
-cd ada-company-app
-
-# Instale as dependências
-npm install
-
-# Execute o projeto
-npx expo start
-```
-
-### Comandos Disponíveis
-
-```bash
-# Iniciar o servidor de desenvolvimento
-npx expo start
-
-# Executar no Android
-npx expo start --android
-
-# Executar no iOS
-npx expo start --ios
-
-# Executar na web
-npx expo start --web
-
-# Build para produção
-npx expo build
-```
-
-## 📱 Plataformas Suportadas
-
-- ✅ **Android** - App nativo Android com SQLite
-- ✅ **iOS** - App nativo iOS com SQLite
-- ✅ **Web** - Funciona no navegador com IndexedDB ⭐ NOVO!
-- ✅ **Expo Go** - App Expo Go para desenvolvimento
-
-### 🔄 Sistema de Storage Cross-Platform
-
-O app detecta automaticamente a plataforma e usa o storage apropriado:
-
-```typescript
-// Mobile (iOS/Android)
-└── SQLite + FileSystem
-    ├── Metadados das imagens
-    └── Arquivos no DocumentDirectory
-
-// Web (Navegador)
-└── IndexedDB + Blob Storage
-    ├── Metadados das imagens
-    └── Blobs armazenados localmente
-```
-
-**Benefícios:**
-- ✅ Mesma API para todas as plataformas
-- ✅ Armazenamento local funciona offline
-- ✅ Sincronização opcional com servidor
-- ✅ Sem dependências específicas de plataforma no código de negócio
-
-### Configuração do Backend
-
-Antes de executar o frontend, certifique-se de que o backend está rodando e configurado:
-
-```bash
-# No diretório do backend
-cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
-npm install
-npm run start:dev
-```
-
-O backend deve estar rodando em `http://localhost:3000`
-
-**⚠️ IMPORTANTE - Executar Seeder:**
-Para poder fazer login com o funcionário de teste, você **DEVE** executar o seeder do backend primeiro:
-
-```bash
-# No diretório do backend
-cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
-npm run db:seed
-```
-
-O seeder cria os usuários de teste (funcionário e cliente) no banco de dados. Sem executar o seeder, as credenciais de teste não funcionarão.
-
-Para mais detalhes sobre as credenciais, consulte: [README do Backend](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md#-credenciais-de-teste-seeder) ou [CREDENCIAIS_TESTE.md](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
-
-### Configuração da API
-
-Configure o IP do seu backend no arquivo `config/api.config.ts`:
-
-```typescript
-const LOCAL_IP = '192.168.50.58'; // Altere para o IP da sua máquina
-```
-
-Para descobrir seu IP local:
-- **Windows:** `ipconfig` (procure por IPv4)
-- **Mac/Linux:** `ifconfig` ou `ip addr`
+- **Avaliação de url via API:**
+  O cliente deve conseguir avaliar o nível de acessibilidade do seu site informando a url dele.
 
 ---
 
-## 🔑 Credenciais de Teste
+## 🖼️ Demonstração Visual
 
-> **⚠️ IMPORTANTE:** As credenciais de teste foram removidas do código por segurança. Elas estão documentadas aqui apenas para referência durante desenvolvimento e testes.
+<p align="center">
+  <img src="assets/hero/heroImage.png" alt="Tela Inicial" width="400"/>
+  <img src="assets/about/aboutImage.png" alt="Sobre o Projeto" width="400"/>
+</p>
 
-### Modo Offline (SQLite Local) - Apenas para Desenvolvimento
+<p align="center">
+  <img src="assets/cards/site-idosos.jpg" alt="Card Idosos" width="250"/>
+  <img src="assets/cards/site-infantil.jpg" alt="Card Infantil" width="250"/>
+  <img src="assets/cards/site-acessibilidade.jpg" alt="Card Acessibilidade" width="250"/>
+</p>
 
-Para usar o modo offline durante desenvolvimento, você precisará criar manualmente os usuários de teste no banco SQLite local ou usar o backend.
+---
 
-**Credenciais de teste (apenas para desenvolvimento):**
-- **Cliente**: 
-  - Email: `client@example.com`
-  - Senha: `password123`
-- **Funcionário**: 
-  - Email: `employee@example.com`
-  - Senha: `password123`
+## 🚀 Tecnologias Utilizadas
 
-**⚠️ Nota de Segurança:** 
-- Essas credenciais **NÃO** estão mais hardcoded no código
-- Elas devem ser usadas **APENAS** em ambiente de desenvolvimento
-- **NUNCA** use essas credenciais em produção
-- Em produção, todos os usuários devem ser cadastrados através do backend
+- **Frontend:** React + Vite, CSS Modules, Nginx
+- **Backend:** NestJS, TypeScript, Sequelize, JWT, Swagger
+- **Banco de Dados:** PostgreSQL
+- **Infraestrutura:** Docker, Docker Compose
+- **Ferramentas:** Git, GitHub, Vercel, Render
 
-### Modo Online (Backend) - Recomendado para Produção
+---
 
-Para usar o app em modo produção:
+## 🗃️ Organização dos Repositórios
 
-1. **Certifique-se de que o backend está rodando** (ver seção "Configuração do Backend" acima)
+- [Repositório Backend](https://github.com/ADACompany01/backEnd-sextoSemestre)
+- [Repositório Frontend](https://github.com/ADACompany01/frontEnd-sextoSemestre)
 
-2. **Execute o seeder do backend** (OBRIGATÓRIO para usar credenciais de teste):
-   ```bash
-   cd ../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
-   npm run db:seed
+Estrutura de pastas principal:
+
+```
+Projetos/
+├── backEnd-sextoSemestre/
+│   └── API_NEST/
+│       └── API_ADA_COMPANY_NESTJS/
+│           ├── docker-compose.yml
+│           ├── dockerfile
+│           └── src/
+└── frontEnd-sextoSemestre/
+    ├── dockerfile
+    ├── nginx.conf
+    └── src/
+```
+
+---
+
+## 📦 Como Executar
+
+Para rodar o sistema completo localmente (frontend, backend e banco de dados), basta usar o docker-compose já configurado no backend:
+
+1. **Clone os repositórios:**
+   ```sh
+   git clone https://github.com/ADACompany01/backEnd-sextoSemestre.git
+   git clone https://github.com/ADACompany01/frontEnd-sextoSemestre.git
+   ```
+2. **Navegue até a pasta do docker-compose:**
+   ```sh
+   cd backEnd-sextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS
+   ```
+3. **Suba todos os containers:**
+   ```sh
+   docker-compose up --build
    ```
 
-3. **Use as credenciais criadas pelo seeder:**
-   - **Funcionário:** `joao.silva@adacompany.com` / `admin123`
-   - **Cliente:** `demo@empresa.com` / `cliente123`
+- O frontend estará disponível em: [http://localhost](http://localhost)
+- O backend (Swagger) estará em: [http://localhost:3000/api](http://localhost:3000/api)
 
-   Ou cadastre um novo usuário usando a tela de registro.
-
-**⚠️ Importante:** 
-- O app funciona em dois modos:
-  - **Offline:** Banco SQLite local (apenas para desenvolvimento/testes)
-  - **Online:** Comunicação com backend NestJS (modo produção recomendado)
-- **Sem executar o seeder, as credenciais de teste do backend não funcionarão!**
-- Para mais detalhes, consulte: [CREDENCIAIS_TESTE.md](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/CREDENCIAIS_TESTE.md)
+> **Observação:**
+> - Não é necessário criar arquivos `.env` para rodar via Docker, pois todas as variáveis já estão no `docker-compose.yml`.
+> - O compose já está ajustado para não depender de healthcheck nem de depends_on no frontend, facilitando o uso local.
 
 ---
 
-## 🔧 Tecnologias Utilizadas
+## 🚦 Integração e Entrega Contínua (CI/CD)
 
-### Core
-- **React Native** 0.81.4 - Framework mobile multiplataforma
-- **Expo** 54.0.12 - Plataforma de desenvolvimento
-- **TypeScript** 5.9.2 - Tipagem estática
-- **React** 19.1.0 - Biblioteca UI
+O projeto utiliza um pipeline automatizado com GitHub Actions para o frontend, localizado em `.github/workflows/ci-frontend.yml`.
 
-### Estado e Comunicação
-- **Axios** 1.7.7 - Cliente HTTP para API
-- **Padrão MVC** - Arquitetura organizacional
+**Principais etapas automatizadas:**
+- Instalação de dependências do frontend
+- Execução de testes automatizados (placeholder, pode ser expandido)
+- Build do código frontend
+- Versionamento semântico automático e criação de tags
+- Build e push de imagens Docker do frontend para o Docker Hub
+- Deploy automático do frontend na Vercel
+- Notificações por e-mail em caso de falha
+- Uso de secrets para credenciais sensíveis
+- Cache de build para acelerar execuções
 
-### UI/UX
-- **React Native SVG** 15.12.1 - Ícones vetoriais
-- **React Native Safe Area Context** 5.6.0 - Área segura
-- **React Native Web** 0.21.0 - Suporte web
+**Resumo do fluxo:**
+1. Build, teste, versionamento e publicação da imagem Docker do frontend.
+2. Deploy automático do frontend na Vercel ao criar uma nova versão.
+3. Notificações automáticas por e-mail em caso de falha em qualquer etapa.
 
-### Persistência
-- **Expo SQLite** 16.0.8 - Banco de dados local (mobile)
-- **IndexedDB** - Banco de dados no navegador (web)
-- **Expo File System** 19.0.16 - Gerenciamento de arquivos (mobile)
-- **Blob Storage** - Armazenamento de imagens na web
-
-### Imagens
-- **Expo Image Picker** 17.0.8 - Seleção de imagens da galeria
-
-### Build e Deploy
-- **Expo Application Services (EAS)** - Build e distribuição
+Para mais detalhes, consulte o arquivo de workflow `.github/workflows/ci-frontend.yml` no repositório.
 
 ---
 
-## 🎯 Funcionalidades Principais
+## 🐳 Documentação Docker
 
-### ✅ **Sistema de Autenticação Completo**
-- Login e cadastro de usuários
-- Autenticação JWT com backend
-- Validação de credenciais
-- Diferenciação entre cliente e funcionário
-- Persistência de sessão (em desenvolvimento)
-- Logout seguro
+O arquivo `docker-compose.yml` já está pronto para uso local, sem healthcheck e sem depends_on no frontend. Basta seguir o passo a passo acima para rodar tudo localmente.
 
-### ✅ **Avaliação de Acessibilidade WCAG**
-- Simulação de avaliação de sites
-- Checklist completo WCAG 2.1 (Níveis A, AA, AAA)
-- Sistema de pontuação inteligente (0-100)
-- Visualização de progresso com gráfico circular
-- Sugestão automática de planos
-- Histórico de avaliações
+### Docker Compose
 
-### ✅ **Gestão Completa de Solicitações**
-- Criação de solicitações por clientes
-- Workflow de 5 estágios:
-  1. **Solicitação** - Cliente solicita serviço
-  2. **Orçamento** - Funcionário envia orçamento
-  3. **Contrato** - Funcionário envia contrato
-  4. **Desenvolvimento** - Serviço em andamento
-  5. **Finalizado** - Serviço concluído
-- Upload e download de arquivos (PDF)
-- Timeline visual de acompanhamento
-- Filtros por status
-- Notificações de mudança de status
+O arquivo `docker-compose.yml` configura três serviços principais:
 
-### ✅ **Dashboard de Cliente**
-- Perfil do usuário com foto
-- Avaliação de novos sites
-- Listagem de solicitações
-- Acompanhamento de status
-- Download de orçamentos e contratos
-- Métricas e estatísticas
+```yaml
+services:
+  database:
+    build: ../../database/postgres
+    container_name: ada-postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: adacompanysteam
+      POSTGRES_PASSWORD: 2N1lrqwIaBxO4eCZU7w0mjGCBXX7QVee
+      POSTGRES_DB: adacompanybd
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./database/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-### ✅ **Dashboard de Funcionário**
-- Gerenciamento de todas as solicitações
-- Atualização de status em tempo real
-- Upload de orçamentos e contratos
-- Visualização de clientes
-- Filtros e busca
-- Estatísticas de produtividade
+  backend:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://adacompanysteam:2N1lrqwIaBxO4eCZU7w0mjGCBXX7QVee@database:5432/adacompanybd
+      JWT_SECRET: "ada_company_secret_key_2025"
+    depends_on:
+      database:
+        condition: service_healthy
 
-### ✅ **Sistema de Planos**
-- **Básico** - Sites simples (R$ 2.500)
-- **Avançado** - Sites médios (R$ 5.000)
-- **Premium** - Sites complexos (R$ 8.500)
-- Recomendação automática baseada na pontuação
-- Comparação de funcionalidades
-- Contratação integrada
+  frontend:
+    build:
+      context: ../../frontEnd-sextoSemestre
+      dockerfile: dockerfile
+    container_name: ada-frontend-app
+    ports:
+      - "80:80"
+    environment:
+      REACT_APP_BACKEND_URL: "http://backend:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+```
 
-### ✅ **Sistema de Imagens Cross-Platform** ⭐ NOVO!
-- **Mobile (SQLite)** + **Web (IndexedDB)** com mesma API
-- Upload de fotos de perfil
-- Seleção da galeria (mobile) ou file input (web)
-- Armazenamento local automático (SQLite no mobile, IndexedDB na web)
-- Sincronização opcional com backend
-- Validação de tipo e tamanho de arquivo
-- Categorização de imagens (user_photo, company_logo, etc.)
-- Sistema de adaptadores para abstração de plataforma
-- Suporte a Blob storage na web
-- Ver: [GUIA_IMAGENS_WEB.md](./GUIA_IMAGENS_WEB.md) para mais detalhes
+### Dockerfile Backend
+
+```dockerfile
+# Etapa 1: build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+COPY tsconfig*.json ./
+COPY . .
+RUN npm install
+RUN npm run build
+# Etapa 2: imagem final
+FROM node:20-alpine
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist/src ./dist
+COPY --from=builder /app/node_modules ./node_modules
+EXPOSE 3000
+CMD ["node", "dist/main.js"]
+```
+
+### Dockerfile Frontend
+
+```dockerfile
+# Etapa 1: build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+COPY . .
+RUN npm install
+RUN npm run build
+# Etapa 2: servidor Nginx para servir os arquivos
+FROM nginx:stable-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+#### Comandos Docker Úteis
+
+```sh
+docker-compose ps
+docker-compose logs
+docker-compose down
+docker-compose up -d --build --force-recreate
+docker exec -it ada-postgres-db psql -U adacompanysteam -d adacompanybd
+docker exec ada-postgres-db pg_dump -U adacompanysteam adacompanybd > backup.sql
+```
 
 ---
 
-## 🎨 Design e UX
+## 🗄️ Estrutura do Banco de Dados
 
-### Princípios de Design
-- **Design responsivo** para diferentes tamanhos de tela
-- **Cores modernas** com gradientes (#667eea, #764ba2, #f093fb, #4facfe)
-- **Animações suaves** para melhor experiência
-- **Interface intuitiva** com feedback visual claro
-- **Tipografia hierárquica** para fácil leitura
-- **Espaçamento consistente** seguindo grid de 8px
+```
+usuarios
+├── id_usuario (UUID, PK)
+├── email (STRING, UNIQUE)
+└── senha (STRING)
 
-### Acessibilidade
-- Contraste adequado de cores
-- Textos legíveis (tamanho mínimo 14px)
-- Áreas de toque mínimas de 44x44px
-- Feedback visual em todas as ações
-- Estados de loading claros
-- Mensagens de erro amigáveis
+clientes
+├── id_cliente (UUID, PK)
+├── nome_completo (STRING)
+├── cnpj (STRING, UNIQUE)
+├── telefone (STRING)
+├── email (STRING, UNIQUE)
+└── id_usuario (UUID, FK -> usuarios)
 
-## 📋 Scripts do Package.json
+funcionarios
+├── id_funcionario (UUID, PK)
+├── nome_completo (STRING)
+├── email (STRING, UNIQUE)
+├── telefone (STRING)
+└── id_usuario (UUID, FK -> usuarios)
+
+pacotes
+├── id_pacote (UUID, PK)
+├── id_cliente (UUID, FK -> clientes)
+├── tipo_pacote (STRING) - A, AA, AAA
+└── valor_base (DECIMAL)
+
+orcamentos
+├── cod_orcamento (UUID, PK)
+├── valor_orcamento (DECIMAL)
+├── data_orcamento (DATE)
+├── data_validade (DATE)
+└── id_pacote (UUID, FK -> pacotes)
+
+contratos
+├── id_contrato (UUID, PK)
+├── valor_contrato (DECIMAL)
+├── cod_orcamento (UUID, FK -> orcamentos)
+├── status_contrato (STRING) - EM_ANALISE, EM_ANDAMENTO, CANCELADO, CONCLUIDO
+├── data_inicio (DATE)
+└── data_entrega (DATE)
+```
+
+Relacionamentos:
+- **usuarios** ↔ **clientes** (1:1)
+- **usuarios** ↔ **funcionarios** (1:1)
+- **clientes** ↔ **pacotes** (1:N)
+- **pacotes** ↔ **orcamentos** (1:1)
+- **orcamentos** ↔ **contratos** (1:1)
+
+---
+
+## 📋 Documentação da API
+
+A API RESTful foi desenvolvida utilizando NestJS e oferece endpoints para todas as funcionalidades do sistema. A documentação completa está disponível via Swagger na URL `/docs` quando o servidor estiver rodando.
+
+Principais endpoints:
+- `GET /auth/token` - Obter token de teste
+- `POST /auth/login` - Login de usuário
+- `POST /clientes/cadastro` - Cadastrar cliente (público)
+- `GET /clientes` - Listar clientes (funcionários)
+- `POST /pacotes` - Criar pacote
+- `POST /orcamentos` - Criar orçamento
+- `POST /contratos` - Criar contrato
+
+Veja a lista completa e exemplos na seção seguinte.
+
+---
+
+## 🔌 Exemplos de Integração
+
+### Autenticação
+
+```bash
+GET /auth/token
+```
 
 ```json
 {
-  "start": "expo start",
-  "android": "expo start --android",
-  "ios": "expo start --ios",
-  "web": "expo start --web"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+```bash
+POST /auth/login
+Content-Type: application/json
+{
+  "email": "usuario@email.com",
+  "senha": "senha123"
+}
+```
+
+### Clientes
+
+```bash
+POST /clientes/cadastro
+Content-Type: application/json
+{
+  "nome_completo": "Empresa ABC Ltda",
+  "cnpj": "12.345.678/0001-90",
+  "telefone": "(11) 99999-9999",
+  "email": "contato@empresaabc.com"
+}
+```
+
+### Pacotes
+
+```bash
+POST /pacotes
+Authorization: Bearer <token>
+Content-Type: application/json
+{
+  "id_cliente": "uuid-do-cliente",
+  "tipo_pacote": "AA",
+  "valor_base": 1500.00
+}
+```
+
+### Orçamentos
+
+```bash
+POST /orcamentos
+Authorization: Bearer <token>
+Content-Type: application/json
+{
+  "valor_orcamento": 2000.00,
+  "data_orcamento": "2023-10-26T10:00:00Z",
+  "data_validade": "2023-11-26T10:00:00Z",
+  "id_pacote": "uuid-do-pacote"
+}
+```
+
+### Contratos
+
+```bash
+POST /contratos
+Authorization: Bearer <token>
+Content-Type: application/json
+{
+  "valor_contrato": 2000.00,
+  "cod_orcamento": "uuid-do-orcamento",
+  "status_contrato": "EM_ANALISE",
+  "data_inicio": "2023-10-26T10:00:00Z",
+  "data_entrega": "2023-12-26T10:00:00Z"
 }
 ```
 
 ---
 
-## 🔗 Integração Backend-Frontend
+## 🌐 Links das Aplicações Publicadas
 
-### Comunicação com API
-
-O frontend se comunica com o backend NestJS através do `ApiService`:
-
-```typescript
-// services/ApiService.ts
-import ApiService from './services/ApiService';
-
-// Login
-const response = await ApiService.login(email, password);
-
-// Cadastro
-const response = await ApiService.register(userData);
-
-// Buscar clientes
-const response = await ApiService.getClients();
-```
-
-### Endpoints Principais
-
-| Endpoint | Método | Descrição | Autenticação |
-|----------|--------|-----------|--------------|
-| `/auth/login` | POST | Login de usuário | ❌ Pública |
-| `/auth/register` | POST | Cadastro de usuário | ❌ Pública |
-| `/clientes` | GET | Listar clientes | ✅ Funcionário |
-| `/clientes/cadastro` | POST | Cadastrar cliente | ❌ Pública |
-| `/funcionarios` | GET | Listar funcionários | ✅ Funcionário |
-| `/pacotes` | GET | Listar pacotes | ✅ Autenticado |
-| `/orcamentos` | POST | Criar orçamento | ✅ Funcionário |
-| `/contratos` | POST | Criar contrato | ✅ Funcionário |
-
-### Fluxo de Autenticação
-
-```
-1. Usuário faz login → LoginScreen
-2. ApiService envia credenciais → POST /auth/login
-3. Backend valida e retorna JWT token
-4. ApiService armazena token em memória
-5. Token incluído automaticamente em requisições futuras
-6. AuthController gerencia estado de autenticação
-7. App.tsx redireciona para dashboard apropriado
-```
+- **Frontend:** [https://newadacompany.vercel.app/](https://newadacompany.vercel.app/)
+- **Backend:** [https://backend-adacompany.onrender.com/api](https://backend-adacompany.onrender.com/api)
 
 ---
 
-## 🔮 Roadmap e Próximas Implementações
+## 👥 Integrantes
 
-### 🎯 Sprint 1 - Segurança (Prioridade Alta)
-- [ ] Implementar SecureStore para persistência segura de token JWT
-- [ ] Adicionar validação de complexidade de senha
-- [ ] Remover console.log sensíveis de produção
-- [ ] Implementar hash de senhas no SQLite local
-- [ ] Adicionar timeout de sessão automático
-
-### 🎯 Sprint 2 - Funcionalidades Core
-- [ ] Sistema de notificações push (Firebase Cloud Messaging)
-- [ ] Modo offline completo com sincronização
-- [ ] Cache inteligente de requisições
-- [ ] Sistema de refresh token automático
-- [ ] Upload de múltiplos arquivos
-
-### 🎯 Sprint 3 - UX/UI
-- [ ] Sistema de roteamento com React Navigation
-- [ ] Animações de transição entre telas
-- [ ] Skeleton loaders
-- [ ] Pull-to-refresh em listas
-- [ ] Dark mode
-- [ ] Internacionalização (i18n)
-
-### 🎯 Sprint 4 - Avaliação Avançada
-- [ ] Integração com Lighthouse API real
-- [ ] Geração de relatórios PDF
-- [ ] Gráficos avançados de métricas
-- [ ] Histórico de avaliações com comparação
-- [ ] Exportação de dados
-
-### 🎯 Sprint 5 - Produtividade
-- [ ] Sistema de comentários em solicitações
-- [ ] Chat em tempo real (Socket.io)
-- [ ] Integração com calendário
-- [ ] Lembretes e deadlines
-- [ ] Sistema de tags e categorias
-
-### 🎯 Sprint 6 - DevOps e Qualidade
-- [ ] Testes unitários (Jest)
-- [ ] Testes E2E (Detox)
-- [ ] CI/CD com GitHub Actions
-- [ ] Monitoramento de erros (Sentry)
-- [ ] Analytics (Firebase Analytics)
-- [ ] Performance monitoring
-
-## 📝 Padrões de Commit
-
-Este projeto segue o padrão de commits convencionais:
-
-```
-feat: adiciona nova funcionalidade
-fix: corrige bug
-docs: atualiza documentação
-style: ajusta formatação
-refactor: refatora código
-test: adiciona testes
-chore: tarefas de manutenção
-```
-
-### Exemplos:
-
-```bash
-git commit -m "feat: implementa sistema de avaliação de sites"
-git commit -m "fix: corrige bug no login de funcionários"
-git commit -m "docs: atualiza README com instruções de instalação"
-git commit -m "refactor: reorganiza estrutura MVC"
-```
-
----
-
-## ⚠️ Problemas Conhecidos
-
-Baseado na [Matriz de Riscos](#-matriz-de-riscos-de-segurança), aqui estão os principais problemas conhecidos:
-
-### 🔴 Críticos
-- **Token JWT não persiste**: Ao recarregar o app, o usuário perde a sessão
-- **Senhas mock em texto plano**: DatabaseService armazena senhas sem hash
-
-### 🟡 Médios
-- **Console.log sensíveis**: Tokens e dados sensíveis aparecem no console
-- **IP hardcoded**: Necessário alterar manualmente em `api.config.ts`
-- **Sem validação de complexidade de senha**: Aceita senhas fracas
-
-### Workarounds Temporários
-1. **Sessão perdida**: Faça login novamente ao recarregar o app
-2. **IP local**: Configure o IP correto antes de executar
-3. **Dados mock**: Use apenas para desenvolvimento, não em produção
-
----
-
-## 🐛 Troubleshooting
-
-### Problema: "Não foi possível conectar ao servidor"
-**Solução:**
-1. Verifique se o backend está rodando em `http://localhost:3000`
-2. Confirme o IP correto em `config/api.config.ts`
-3. Verifique se ambos (frontend e device) estão na mesma rede
-
-### Problema: "Token inválido ou expirado"
-**Solução:**
-1. Faça logout e login novamente
-2. Verifique se o JWT_SECRET do backend está configurado
-3. Token expira em 1 hora - faça novo login
-
-### Problema: "Expo Go não conecta"
-**Solução:**
-1. Certifique-se de estar na mesma rede Wi-Fi
-2. Desative firewall temporariamente
-3. Use modo tunnel: `npx expo start --tunnel`
-
-### Problema: "Erro ao fazer build"
-**Solução:**
-1. Limpe cache: `npx expo start -c`
-2. Reinstale dependências: `rm -rf node_modules && npm install`
-3. Atualize Expo CLI: `npm install -g @expo/cli@latest`
-
----
-
-## 📊 Métricas do Projeto
-
-| Métrica | Valor |
-|---------|-------|
-| **Linhas de código** | ~5.000+ |
-| **Arquivos TypeScript** | 25+ |
-| **Componentes React** | 10+ |
-| **Controllers** | 4 |
-| **Models** | 4 |
-| **Services** | 3 |
-| **Telas** | 6 |
-| **Requisitos Funcionais** | 8 |
-| **Requisitos Não Funcionais** | 8 |
-| **Riscos Identificados** | 20 |
-| **Plataformas Suportadas** | 3 (Android, iOS, Web) |
-
----
-
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Siga estas etapas:
-
-### 1. Fork e Clone
-```bash
-git clone https://github.com/seu-usuario/ada-company-frontend.git
-cd ada-company-frontend
-```
-
-### 2. Crie uma Branch
-```bash
-git checkout -b feature/minha-funcionalidade
-# ou
-git checkout -b fix/correcao-bug
-```
-
-### 3. Desenvolva e Teste
-- Siga o padrão MVC existente
-- Adicione comentários em código complexo
-- Teste em pelo menos 2 plataformas (Android + Web ou iOS + Web)
-
-### 4. Commit com Padrão Convencional
-```bash
-git commit -m "feat: adiciona sistema de notificações push"
-git commit -m "fix: corrige logout em iOS"
-git commit -m "docs: atualiza README com novas instruções"
-```
-
-### 5. Push e Pull Request
-```bash
-git push origin feature/minha-funcionalidade
-```
-Abra um Pull Request descrevendo suas mudanças.
-
-### Diretrizes de Código
-- ✅ Use TypeScript estritamente tipado
-- ✅ Siga o padrão MVC (Model-View-Controller)
-- ✅ Componentes reutilizáveis em `views/components/`
-- ✅ Lógica de negócio em Controllers
-- ✅ Acesso a dados em Models
-- ✅ Nomenclatura clara e descritiva
-- ✅ Máximo 250 linhas por arquivo (quando possível)
-
----
-
-## 📚 Recursos Adicionais
-
-### Documentação Relacionada
-- [Backend NestJS - README](../backEnd-SextoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/README.md)
-- [Matriz de Riscos - CSV](../Modelo_Matriz_de_Riscos_SI.csv)
-- **📸 Sistema de Imagens Cross-Platform:**
-  - [GUIA_IMAGENS_WEB.md](./GUIA_IMAGENS_WEB.md) - Guia completo de uso
-  - [RESUMO_IMPLEMENTACAO.md](./RESUMO_IMPLEMENTACAO.md) - Detalhes da implementação
-  - [INTEGRACAO_EXEMPLO.md](./INTEGRACAO_EXEMPLO.md) - Exemplos de integração
-  - [COMO_TESTAR.md](./COMO_TESTAR.md) - Instruções de teste
-- [Expo Documentation](https://docs.expo.dev/)
-- [React Native Documentation](https://reactnative.dev/docs/getting-started)
-
-### Links Úteis
-- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-- [React Native Best Practices](https://github.com/react-native-community/discussions-and-proposals)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-- [Expo Application Services](https://expo.dev/eas)
+- Luiz Riato
+- Matheus Prusch
+- Maycon Sanches
+- Pietro Adrian
+- Samuel Pregnolatto
 
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais detalhes.
-
-### Termos de Uso
-- ✅ Uso comercial permitido
-- ✅ Modificação permitida
-- ✅ Distribuição permitida
-- ✅ Uso privado permitido
-- ⚠️ Sem garantia
-- ⚠️ Sem responsabilidade do autor
+Este projeto está sob a licença MIT.
 
 ---
 
-## 👥 Equipe e Contato
+## 📚 Referências e Suporte
 
-### Projeto
-- **Empresa:** ADA Company
-- **Tipo:** Aplicação Mobile - Sistema de Gestão de Acessibilidade Web
-- **Arquitetura:** Padrão MVC (Model-View-Controller)
-- **Framework:** React Native + Expo
-- **Backend:** NestJS + PostgreSQL
+- [Documentação React](https://react.dev/)
+- [Documentação NestJS](https://nestjs.com/)
+- [Documentação PostgreSQL](https://www.postgresql.org/)
+- [Documentação Docker](https://www.docker.com/)
+- [Swagger](https://swagger.io/)
 
-### Stack Completo
-- **Frontend Mobile:** React Native + TypeScript + Expo
-- **Backend API:** NestJS + TypeScript
-- **Banco Relacional:** PostgreSQL
-- **Banco NoSQL:** MongoDB
-- **Autenticação:** JWT (JSON Web Tokens)
-- **ORM:** Sequelize
-- **Documentação API:** Swagger/OpenAPI
-
-### Semestre
-**5º Semestre - Desenvolvimento de Software Multiplataforma**  
-**Ano:** 2025
-
----
-
-<p align="center">
-  <strong>Desenvolvido com ❤️ pela ADA Company</strong><br>
-  <sub>Sistema de Gestão de Acessibilidade Web - Frontend Mobile</sub><br><br>
-  <img src="https://img.shields.io/badge/Status-Em_Desenvolvimento-yellow?style=flat-square" alt="Status" />
-  <img src="https://img.shields.io/badge/Versão-1.0.0-blue?style=flat-square" alt="Versão" />
-  <img src="https://img.shields.io/badge/Arquitetura-MVC-green?style=flat-square" alt="Arquitetura" />
-</p>
+Para dúvidas ou problemas:
+- Abra uma issue no repositório correspondente
+- Entre em contato com a equipe de desenvolvimento
+- Consulte a documentação da API em `/docs` (Swagger) 

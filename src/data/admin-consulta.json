@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Clientes",
+    "imageSrc": "skills/user.png",
+    "link": "../listclient"
+  },
+  {
+    "title": "Funcionário",
+    "imageSrc": "skills/func.png",
+    "link": "../listfunc"
+  },
+  {
+    "title": "Orçamento",
+    "imageSrc": "skills/orcamento.png",
+    "link": "../listbudget"
+  },
+  {
+    "title": "Serviço",
+    "imageSrc": "skills/servico.png",
+    "link": "../listservice"
+  }
+]
