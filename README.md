@@ -101,7 +101,7 @@ O projeto foi refatorado para seguir o padrão MVC, organizando o código em cam
 
 ## ☁️ Infraestrutura e Arquitetura Azure
 
-O projeto utiliza uma arquitetura moderna baseada em serviços Azure para garantir escalabilidade, segurança e disponibilidade.
+O projeto utiliza uma arquitetura baseada em Azure Virtual Machine com containers Docker, utilizando serviços essenciais da Azure para armazenamento e monitoramento. para garantir escalabilidade, segurança e disponibilidade.
 
 ### 📊 Diagrama de Arquitetura
 
@@ -124,26 +124,28 @@ O projeto utiliza uma arquitetura moderna baseada em serviços Azure para garant
 #### **Banco de Dados Relacional (PostgreSQL)**
 - Armazenamento de dados estruturados
 - Tabelas: Usuários, Clientes, Funcionários, Contratos, Orçamentos
-- Backups automáticos
-- Replicação para alta disponibilidade
+- Backups manuais ou automatizados via script
+- Persistência via Docker volumes
 
-#### **Banco NoSQL (DynamoDB - Azure)**
+#### **Banco NoSQL (MongoDB)**
 - Sistema de logs da aplicação
 - Alta performance para escritas
 - Escalabilidade automática
 - Time-to-Live (TTL) para limpeza automática
 
 #### **Serviços Azure Utilizados**
-- 🔐 **Azure IAM**: Gerenciamento de acesso e permissões
-- 📊 **DynamoDB**: Armazenamento de logs NoSQL
-- 🌐 **Route 53** (planejado): DNS e roteamento
-- 🔒 **Azure Secrets Manager** (planejado): Gestão segura de credenciais
+- 🔐 Microsoft Entra ID (IAM da Azure)
+- 📊 Azure Monitor (Logs e métricas)
+- 🌐 Azure DNS
+- 🔒 Azure Key Vault (Secrets)
+- 📦 Azure Blob Storage (Arquivos/PDFs)
+- 🖥️ Azure Virtual Machine (Compute)
 
 ### 🔄 Fluxo de Dados
 
 1. **Cliente Mobile** → Requisição HTTPS → **API Backend**
 2. **API Backend** → Consulta/Atualiza → **PostgreSQL**
-3. **API Backend** → Registra logs → **DynamoDB**
+3. **API Backend** → Registra logs → **Azure Monittor / Log Analytcs**
 4. **PostgreSQL** ← Sincronização ← **SQLite Local** (modo offline)
 
 ---
@@ -854,13 +856,13 @@ Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais de
 - **Tipo:** Aplicação Mobile - Sistema de Gestão de Acessibilidade Web
 - **Arquitetura:** Padrão MVC (Model-View-Controller)
 - **Framework:** React Native + Expo
-- **Backend:** NestJS + PostgreSQL + DynamoDB
+- **Backend:** NestJS + PostgreSQL
 
 ### Stack Completo
 - **Frontend Mobile:** React Native + TypeScript + Expo
 - **Backend API:** NestJS + TypeScript
 - **Banco Relacional:** PostgreSQL
-- **Banco NoSQL:** DynamoDB (Azure)
+- **Banco NoSQL:** MongoDB
 - **Autenticação:** JWT (JSON Web Tokens)
 - **ORM:** Sequelize
 - **Documentação API:** Swagger/OpenAPI
