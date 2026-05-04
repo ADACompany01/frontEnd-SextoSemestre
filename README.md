@@ -22,7 +22,7 @@ Uma aplicação **React Native** desenvolvida com **Expo** para avaliação e ge
 ## 📋 Sumário
 
 - [Arquitetura MVC](#-arquitetura-mvc)
-- [Infraestrutura e Arquitetura AWS](#-infraestrutura-e-arquitetura-aws)
+- [Infraestrutura e Arquitetura Azure](#-infraestrutura-e-arquitetura-azure)
 - [Requisitos Funcionais](#-requisitos-funcionais)
 - [Requisitos Não Funcionais](#-requisitos-não-funcionais)
 - [Matriz de Riscos de Segurança](#-matriz-de-riscos-de-segurança)
@@ -99,13 +99,13 @@ O projeto foi refatorado para seguir o padrão MVC, organizando o código em cam
 
 ---
 
-## ☁️ Infraestrutura e Arquitetura AWS
+## ☁️ Infraestrutura e Arquitetura Azure
 
-O projeto utiliza uma arquitetura moderna baseada em serviços AWS para garantir escalabilidade, segurança e disponibilidade.
+O projeto utiliza uma arquitetura moderna baseada em serviços Azure para garantir escalabilidade, segurança e disponibilidade.
 
 ### 📊 Diagrama de Arquitetura
 
-![Diagrama de Infraestrutura AWS](./assets/DiagramaAdaCompany.png)
+![Diagrama de Infraestrutura Azure](./assets/DiagramaAdaCompany.png)
 
 ### 🏗️ Componentes da Infraestrutura
 
@@ -127,17 +127,17 @@ O projeto utiliza uma arquitetura moderna baseada em serviços AWS para garantir
 - Backups automáticos
 - Replicação para alta disponibilidade
 
-#### **Banco NoSQL (DynamoDB - AWS)**
+#### **Banco NoSQL (DynamoDB - Azure)**
 - Sistema de logs da aplicação
 - Alta performance para escritas
 - Escalabilidade automática
 - Time-to-Live (TTL) para limpeza automática
 
-#### **Serviços AWS Utilizados**
-- 🔐 **AWS IAM**: Gerenciamento de acesso e permissões
+#### **Serviços Azure Utilizados**
+- 🔐 **Azure IAM**: Gerenciamento de acesso e permissões
 - 📊 **DynamoDB**: Armazenamento de logs NoSQL
 - 🌐 **Route 53** (planejado): DNS e roteamento
-- 🔒 **AWS Secrets Manager** (planejado): Gestão segura de credenciais
+- 🔒 **Azure Secrets Manager** (planejado): Gestão segura de credenciais
 
 ### 🔄 Fluxo de Dados
 
@@ -193,7 +193,7 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 #### R001 - Credenciais Expostas no docker-compose.yml
 - **Risco:** 90 (Impacto: 10 × Probabilidade: 9)
 - **Status:** ⏳ Pendente
-- **Descrição:** `JWT_SECRET`, senhas do banco e credenciais AWS hardcoded no `docker-compose.yml`
+- **Descrição:** `JWT_SECRET`, senhas do banco e credenciais Azure hardcoded no `docker-compose.yml`
 - **Localização:** `backEnd-QuintoSemestre/API_NEST/API_ADA_COMPANY_NESTJS/docker-compose.yml`
 - **Ação:** Migrar para variáveis de ambiente e usar Docker Secrets
 - **Responsável:** DevOps
@@ -256,11 +256,11 @@ Esta seção apresenta os **20 riscos de segurança identificados** através de 
 - **Ação:** Adicionar autenticação no Swagger ou restringir ao ambiente dev
 - **Responsável:** Backend Lead
 
-#### R009 - AWS Credentials Hardcoded
+#### R009 - Azure Credentials Hardcoded
 - **Risco:** 45 (Impacto: 9 × Probabilidade: 5)
 - **Status:** ⏳ Pendente
-- **Descrição:** `docker-compose.yml` contém placeholders de AWS_ACCESS_KEY_ID
-- **Ação:** Usar AWS IAM roles ou variáveis de ambiente
+- **Descrição:** `docker-compose.yml` contém placeholders de Azure_ACCESS_KEY_ID
+- **Ação:** Usar Azure IAM roles ou variáveis de ambiente
 - **Responsável:** DevOps
 
 ### 🟢 Riscos Médios
@@ -860,7 +860,7 @@ Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais de
 - **Frontend Mobile:** React Native + TypeScript + Expo
 - **Backend API:** NestJS + TypeScript
 - **Banco Relacional:** PostgreSQL
-- **Banco NoSQL:** DynamoDB (AWS)
+- **Banco NoSQL:** DynamoDB (Azure)
 - **Autenticação:** JWT (JSON Web Tokens)
 - **ORM:** Sequelize
 - **Documentação API:** Swagger/OpenAPI
