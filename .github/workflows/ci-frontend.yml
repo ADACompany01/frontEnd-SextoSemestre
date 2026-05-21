@@ -24,13 +24,16 @@ jobs:
           node-version: '20'
 
       - name: Instalar Dependências do Frontend
-        run: npm install
+        run: npm ci
 
-      - name: Executar Testes do Frontend
-        run: |
-          echo "Execução de testes do Frontend."
-          echo "Testes de conformidade executados e aprovados."
-          exit 0
+      - name: Executar ESLint
+        run: npm run lint
+
+      - name: Executar Testes Unitários
+        run: npm run test
+
+      - name: Executar Cobertura de Testes
+        run: npm run coverage
 
       - name: Buildar Frontend
         run: npm run build

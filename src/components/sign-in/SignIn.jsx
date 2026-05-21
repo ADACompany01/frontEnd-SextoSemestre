@@ -8,8 +8,8 @@ export default function SignIn() {
   const [email, setEmail] = React.useState('');
   const [senha, setSenha] = React.useState('');
   const [erro, setErro] = React.useState('');
-  const hostname = window.location.hostname;
   let apiUrl;
+// const hostname = window.location.hostname;
 // if (hostname === 'localhost' || hostname === '127.0.0.1') {
 //     // 1. Ambiente de Desenvolvimento Local
 //     // (Frontend em localhost:xxxx falando com Backend em localhost:3000)

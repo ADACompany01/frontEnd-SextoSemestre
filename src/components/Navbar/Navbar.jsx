@@ -33,16 +33,6 @@ export const Navbar = () => {
     navigate("/signin");
   };
 
-  const handleMenu = () => {
-    const decodedToken = jwtDecode(token);
-    const userRole = decodedToken?.tipo_usuario; // Use tipo_usuario instead of role
-    if (userRole === "cliente") {
-      navigate("/portalcliente");
-    } else if (userRole === "funcionario") {
-      navigate("/admin");
-    }
-  };
-
   const handlePainel = () => {
     console.log("Painel clicked, token:", token);
     const decodedToken = jwtDecode(token);
