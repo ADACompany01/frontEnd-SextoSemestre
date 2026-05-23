@@ -168,21 +168,9 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
             ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ github.ref_name }}
-            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ steps.versioning.outputs.new_version }}
+            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ steps.versioning.outputs.NEW_VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      - name: Buildar e Publicar Imagem Docker do Frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
-            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ github.ref_name }}
-            ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:${{ steps.versioning.outputs.new_version }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max    
 
       - name: Mover Cache de Buildx
         run: |
@@ -197,13 +185,13 @@ jobs:
       #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
       #     vercel-args: '--prod'
 
-      - name: Deploy do Frontend na EC2
+      - name: Deploy do Frontend na Azure VM
         if: success() # Só executa se os passos anteriores funcionarem
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_USER }}
+          key: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           script: |
             # Puxa a nova imagem do Frontend
             docker pull ${{ secrets.DOCKER_USERNAME }}/ada-company-frontend:latest
@@ -213,7 +201,7 @@ jobs:
             docker rm web-frontend || true
             
             # Inicia o novo container
-            # Mapeia a porta 80 interna do container para a porta 8080 da EC2
+            # Mapeia a porta 80 interna do container para a porta 8080 da azure
             docker run -d \
               -p 8080:80 \
               --name web-frontend \
