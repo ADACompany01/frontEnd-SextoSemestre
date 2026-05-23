@@ -74,7 +74,12 @@ jobs:
           echo "DEBUG: Versão atual - Major: $MAJOR, Minor: $MINOR, Patch: $PATCH"
 
           echo "Obtendo commits desde a última tag..."
-          COMMITS_SINCE_LAST_TAG=$(git log "$LAST_TAG..HEAD" --pretty=format:"%s")
+          echo "Obtendo commits desde a última tag..."
+          if [ "$LAST_TAG" = "v0.0.0" ]; then
+              COMMITS_SINCE_LAST_TAG=$(git log HEAD --pretty=format:"%s")
+          else
+              COMMITS_SINCE_LAST_TAG=$(git log "$LAST_TAG..HEAD" --pretty=format:"%s")
+          fi
           echo "DEBUG: Commits desde '$LAST_TAG':"
           echo "$COMMITS_SINCE_LAST_TAG"
           echo "-----------------------------------"
