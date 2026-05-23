@@ -140,8 +140,13 @@ jobs:
               echo "DEBUG: Tag '$NEW_VERSION' criada localmente."
           fi
 
+          echo "Sincronizando com a branch main remota..."
+          git pull --rebase origin main
+
+          echo "Fazendo push para main..."
           git push origin main
-          echo "DEBUG: Fazendo push da tag '$NEW_VERSION'..."
+
+          echo "Fazendo push da tag '$NEW_VERSION'..."
           git push origin "$NEW_VERSION"
           echo "DEBUG: Push de commit e tag concluído."
 
@@ -195,7 +200,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
-          username: ${{ secrets.AZURE_USER }}
+          username: ${{ secrets.AZURE_VM_USER }}
           key: ${{ secrets.AZURE_VM_PRIVATE_KEY }}
           script: |
             # Puxa a nova imagem do Frontend
