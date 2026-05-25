@@ -18,10 +18,10 @@ const AdminPainel = () => {
         
         // Tentar diferentes endpoints possíveis
         const endpoints = [
-          "https://apiadacompany.duckdns.org/contratos",
-          "https://apiadacompany.duckdns.org/contrato",
-          "https://apiadacompany.duckdns.org/api/contratos",
-          "https://apiadacompany.duckdns.org/api/contrato"
+          "http://apiadacompany.duckdns.org/contratos",
+          "http://apiadacompany.duckdns.org/contrato",
+          "http://apiadacompany.duckdns.org/api/contratos",
+          "http://apiadacompany.duckdns.org/api/contrato"
         ];
         
         let data = null;

@@ -22,7 +22,7 @@ export default function SignIn() {
 //     apiUrl = `${window.location.protocol}//${hostname}/api`;
 //   }
 
-  const apiUrl = 'https://apiadacompany.duckdns.org/api';
+  const apiUrl = 'http://apiadacompany.duckdns.org/api';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
