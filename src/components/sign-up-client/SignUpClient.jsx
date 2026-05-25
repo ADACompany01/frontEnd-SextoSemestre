@@ -17,7 +17,7 @@ export default function SignUpClient() {
 //     apiUrl = 'http://localhost:3001';
 //   }
 
-  let apiUrl = 'http://localhost:3001/api';
+  const API_URL = 'https://apiadacompany.duckdns.org/api';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
