@@ -12,9 +12,7 @@ const Dashboard = () => {
   const [speechError, setSpeechError] = useState('');
   const recognitionRef = useRef(null);
 
-  const apiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3001/api'
-    : 'https://adacompany.duckdns.org/api';
+  const apiUrl = 'http://apiadacompany.duckdns.org/api';
 
   const handleAnalyze = async () => {
     if (!url) return;
