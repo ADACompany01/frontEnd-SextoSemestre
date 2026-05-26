@@ -5,6 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SendIcon from "@mui/icons-material/Send";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import styles from "./ChatbotWidget.module.css";
 
 const API_BASE_URL =
@@ -13,6 +14,8 @@ const API_BASE_URL =
   window.location.hostname === "127.0.0.1"
     ? "http://localhost:3001/api"
     : "http://apiadacompany.duckdns.org/api");
+
+const WHATSAPP_PHONE = "5515981038249";
 
 const fallbackTree = {
   rootNodeId: "inicio",
@@ -73,7 +76,7 @@ const fallbackTree = {
       title: "Falar com Atendente",
       message: "Vou te direcionar para um atendente especializado.",
       options: [],
-      action: { type: "handoff", label: "Ir para login", url: "/signin" },
+      action: { type: "handoff", label: "Falar no WhatsApp" },
     },
     wcag: {
       id: "wcag",
@@ -129,14 +132,14 @@ const fallbackTree = {
       title: "Duvidas Tecnicas",
       message: "Podemos ajudar com uso, funcionamento, acessibilidade, desempenho, integracoes e manutencao.",
       options: [],
-      action: { type: "handoff", label: "Falar com atendente", url: "/signin" },
+      action: { type: "handoff", label: "Falar no WhatsApp" },
     },
     "manutencao-suporte": {
       id: "manutencao-suporte",
       title: "Manutencao e Suporte",
       message: "Nosso suporte ajuda com ajustes, atualizacoes, correcao de problemas e melhoria de acessibilidade.",
       options: [],
-      action: { type: "handoff", label: "Solicitar suporte", url: "/signin" },
+      action: { type: "handoff", label: "Falar no WhatsApp" },
     },
     treinamentos: {
       id: "treinamentos",
@@ -162,6 +165,14 @@ function buildBotMessage(node) {
     title: node.title,
     text: node.message,
   };
+}
+
+function buildWhatsAppUrl(node) {
+  const context = node?.title ? `Estou na etapa "${node.title}" do chatbot.` : "Vim pelo chatbot.";
+  const detail = node?.message ? `\n\nContexto: ${node.message}` : "";
+  const message = `Ola! Vim pelo chatbot da AdaCompany. ${context}${detail}\n\nGostaria de falar com um atendente.`;
+
+  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 }
 
 export default function ChatbotWidget() {
@@ -260,6 +271,12 @@ export default function ChatbotWidget() {
       return;
     }
 
+    if (currentNode.action.type === "handoff") {
+      window.open(buildWhatsAppUrl(currentNode), "_blank", "noopener,noreferrer");
+      setIsOpen(false);
+      return;
+    }
+
     if (currentNode.action.url) {
       navigate(currentNode.action.url);
       setIsOpen(false);
@@ -315,8 +332,16 @@ export default function ChatbotWidget() {
 
             {currentNode.action && (
               <button type="button" onClick={runAction} className={styles.actionButton}>
-                <SendIcon fontSize="small" />
-                <span>{currentNode.action.label}</span>
+                {currentNode.action.type === "handoff" ? (
+                  <WhatsAppIcon fontSize="small" />
+                ) : (
+                  <SendIcon fontSize="small" />
+                )}
+                <span>
+                  {currentNode.action.type === "handoff"
+                    ? "Falar no WhatsApp"
+                    : currentNode.action.label}
+                </span>
               </button>
             )}
           </div>
