@@ -27,6 +27,7 @@ import { useEffect } from 'react';
 import AdminDashboard from "./components/painel-admin/AdminDashboard";
 import AdminPainel from "./components/painel-admin/AdminPainel";
 import AdminLayout from "./components/painel-admin/AdminLayout";
+import ChatbotWidget from "./components/Chatbot/ChatbotWidget";
 
 function Home() {
   return (
@@ -124,6 +125,7 @@ const scriptUserWay = document.createElement('script');
           <Route path="gerenciar-pedidos" element={<AdminPainel />} />
         </Route>
         </Routes>
+        <ChatbotWidget />
         <Contact />
       </div>
     </Router>
