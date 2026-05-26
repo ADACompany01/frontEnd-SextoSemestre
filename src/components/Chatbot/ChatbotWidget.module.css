@@ -97,14 +97,31 @@
   padding: 10px 12px;
   line-height: 1.45;
   font-size: 0.95rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.messageContent {
   display: grid;
   gap: 4px;
-  overflow-wrap: anywhere;
 }
 
 .message strong {
   font-size: 0.84rem;
   color: inherit;
+}
+
+.adaAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  background: #eef3ff;
+  border: 1px solid rgba(79, 81, 212, 0.2);
+  flex: 0 0 auto;
 }
 
 .botMessage {
@@ -177,6 +194,49 @@
 .actionButton:focus-visible {
   background: #0f846b;
   outline: 2px solid rgba(20, 163, 131, 0.24);
+}
+
+.freeChatForm {
+  padding: 12px;
+  border-top: 1px solid rgba(25, 55, 109, 0.12);
+  background: #ffffff;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  gap: 8px;
+}
+
+.freeChatForm input {
+  min-width: 0;
+  min-height: 44px;
+  border-radius: 8px;
+  border: 1px solid rgba(79, 81, 212, 0.26);
+  color: #0b2447;
+  padding: 0 12px;
+  font: inherit;
+}
+
+.freeChatForm input:focus {
+  border-color: #4f51d4;
+  outline: 2px solid rgba(79, 81, 212, 0.18);
+}
+
+.freeChatForm button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: #4f51d4;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.freeChatForm button:hover,
+.freeChatForm button:focus-visible {
+  background: #19376d;
+  outline: 2px solid rgba(79, 81, 212, 0.24);
 }
 
 @media (max-width: 640px) {

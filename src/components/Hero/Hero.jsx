@@ -20,6 +20,17 @@ export const Hero = () => {
     })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
   }, []);
 
+  function openAdaChat() {
+    window.dispatchEvent(
+      new CustomEvent("ada-chat:open", {
+        detail: {
+          title: "Contato",
+          message: "Cliente abriu a conversa pelo botao principal da pagina inicial.",
+        },
+      }),
+    );
+  }
+
   return (
     <section className={styles.container}>
       <div className={styles.content}>
@@ -28,12 +39,13 @@ export const Hero = () => {
           Sou sua assistente virtual. Minha missão é tornar seu sistema
           acessível para todos!
         </p>
-        <a
-          href="mailto:ada2024fatec.mrs@outlook.com"
+        <button
+          type="button"
+          onClick={openAdaChat}
           className={styles.contactBtn}
         >
-          Entre em contato
-        </a>
+          Conversar com a Ada
+        </button>
       </div>
       <img
         src={getImageUrl("hero/AdaHome.png")}

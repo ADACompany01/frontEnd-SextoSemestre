@@ -41,6 +41,7 @@
 }
 
 .contactBtn {
+  border: 0;
   text-decoration: none;
   background-color: var(--color-primary);
   color: var(--color-text);
@@ -49,6 +50,7 @@
   font-weight: 600;
   padding: 17px 26px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 
 .contactBtn:hover {

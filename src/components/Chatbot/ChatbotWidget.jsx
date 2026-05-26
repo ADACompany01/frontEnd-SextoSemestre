@@ -5,7 +5,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SendIcon from "@mui/icons-material/Send";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
+import { getImageUrl } from "../../utils";
+import { getAdaResponse } from "../../services/adaNlpChatbot";
 import styles from "./ChatbotWidget.module.css";
 
 const API_BASE_URL =
@@ -14,8 +16,6 @@ const API_BASE_URL =
   window.location.hostname === "127.0.0.1"
     ? "http://localhost:3001/api"
     : "http://apiadacompany.duckdns.org/api");
-
-const WHATSAPP_PHONE = "5515981038249";
 
 const fallbackTree = {
   rootNodeId: "inicio",
@@ -167,17 +167,23 @@ function buildBotMessage(node) {
   };
 }
 
-function buildWhatsAppUrl(node) {
-  const context = node?.title ? `Estou na etapa "${node.title}" do chatbot.` : "Vim pelo chatbot.";
-  const detail = node?.message ? `\n\nContexto: ${node.message}` : "";
-  const message = `Ola! Vim pelo chatbot da AdaCompany. ${context}${detail}\n\nGostaria de falar com um atendente.`;
+function buildAdaGreeting(contextNode) {
+  const context = contextNode?.title ? `Vi que sua dúvida está em "${contextNode.title}". ` : "";
 
-  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+  return {
+    id: `ada-greeting-${Date.now()}`,
+    author: "bot",
+    title: "Ada",
+    text: `${context}Pode conversar comigo por aqui. Vou usar PLN para entender sua mensagem e direcionar o próximo passo.`,
+  };
 }
 
 export default function ChatbotWidget() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [chatMode, setChatMode] = useState("guided");
+  const [freeInput, setFreeInput] = useState("");
+  const [conversationContext, setConversationContext] = useState(null);
   const [tree, setTree] = useState(fallbackTree);
   const [currentNodeId, setCurrentNodeId] = useState(fallbackTree.rootNodeId);
   const [messages, setMessages] = useState([
@@ -223,6 +229,18 @@ export default function ChatbotWidget() {
     }
   }, [isOpen, messages]);
 
+  useEffect(() => {
+    function handleOpenAdaChat(event) {
+      openAdaConversation(event.detail || { title: "Contato", message: "Cliente abriu o chat pelo botao principal." });
+    }
+
+    window.addEventListener("ada-chat:open", handleOpenAdaChat);
+
+    return () => {
+      window.removeEventListener("ada-chat:open", handleOpenAdaChat);
+    };
+  }, []);
+
   async function chooseOption(option) {
     const userMessage = {
       id: `${option.id}-user-${Date.now()}`,
@@ -258,8 +276,91 @@ export default function ChatbotWidget() {
 
   function restartChat() {
     const rootNode = tree.nodes[tree.rootNodeId];
+    setChatMode("guided");
+    setConversationContext(null);
+    setFreeInput("");
     setCurrentNodeId(rootNode.id);
     setMessages([buildBotMessage(rootNode)]);
+  }
+
+  function openAdaConversation(contextNode) {
+    setConversationContext(contextNode || currentNode);
+    setChatMode("free");
+    setIsOpen(true);
+    setFreeInput("");
+    setMessages([buildAdaGreeting(contextNode || currentNode)]);
+  }
+
+  async function requestAdaLlmAnswer(text) {
+    const history = messages
+      .slice(-8)
+      .map((message) => ({
+        author: message.author,
+        text: message.text,
+      }));
+
+    const response = await fetch(`${API_BASE_URL}/chatbot/llm`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text,
+        contextTitle: conversationContext?.title,
+        history,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Falha ao consultar a Ada no backend");
+    }
+
+    const payload = await response.json();
+    return payload.data?.text;
+  }
+
+  async function submitFreeMessage(event) {
+    event.preventDefault();
+
+    const text = freeInput.trim();
+    if (!text) return;
+
+    const userMessage = {
+      id: `free-user-${Date.now()}`,
+      author: "user",
+      text,
+    };
+    setMessages((previous) => [...previous, userMessage]);
+    setFreeInput("");
+    setIsLoading(true);
+
+    try {
+      const backendAnswer = await requestAdaLlmAnswer(text);
+      const localAnswer = backendAnswer ? null : getAdaResponse(text, conversationContext?.title);
+
+      setMessages((previous) => [
+        ...previous,
+        {
+          id: `free-bot-${Date.now()}`,
+          author: "bot",
+          title: "Ada",
+          text: backendAnswer || localAnswer.text,
+        },
+      ]);
+    } catch (error) {
+      console.warn("Usando PLN local da Ada.", error);
+      const answer = getAdaResponse(text, conversationContext?.title);
+
+      setMessages((previous) => [
+        ...previous,
+        {
+          id: `free-bot-${Date.now()}`,
+          author: "bot",
+          title: "Ada",
+          text: answer.text,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function runAction() {
@@ -272,8 +373,7 @@ export default function ChatbotWidget() {
     }
 
     if (currentNode.action.type === "handoff") {
-      window.open(buildWhatsAppUrl(currentNode), "_blank", "noopener,noreferrer");
-      setIsOpen(false);
+      openAdaConversation(currentNode);
       return;
     }
 
@@ -310,41 +410,66 @@ export default function ChatbotWidget() {
                   message.author === "user" ? styles.userMessage : styles.botMessage
                 }`}
               >
-                {message.title && <strong>{message.title}</strong>}
-                <span>{message.text}</span>
+                {message.author === "bot" && (
+                  <img
+                    src={getImageUrl("hero/AdaHome.png")}
+                    alt=""
+                    className={styles.adaAvatar}
+                    aria-hidden="true"
+                  />
+                )}
+                <span className={styles.messageContent}>
+                  {message.title && <strong>{message.title}</strong>}
+                  <span>{message.text}</span>
+                </span>
               </div>
             ))}
             {isLoading && <div className={`${styles.message} ${styles.botMessage}`}>Digitando...</div>}
           </div>
 
-          <div className={styles.options}>
-            {currentNode.options.map((option) => (
-              <button
-                type="button"
-                key={option.id}
-                onClick={() => chooseOption(option)}
-                className={styles.optionButton}
-              >
-                <span>{option.label}</span>
-                <small>{option.description}</small>
-              </button>
-            ))}
+          {chatMode === "guided" ? (
+            <div className={styles.options}>
+              {currentNode.options.map((option) => (
+                <button
+                  type="button"
+                  key={option.id}
+                  onClick={() => chooseOption(option)}
+                  className={styles.optionButton}
+                >
+                  <span>{option.label}</span>
+                  <small>{option.description}</small>
+                </button>
+              ))}
 
-            {currentNode.action && (
-              <button type="button" onClick={runAction} className={styles.actionButton}>
-                {currentNode.action.type === "handoff" ? (
-                  <WhatsAppIcon fontSize="small" />
-                ) : (
-                  <SendIcon fontSize="small" />
-                )}
-                <span>
-                  {currentNode.action.type === "handoff"
-                    ? "Falar no WhatsApp"
-                    : currentNode.action.label}
-                </span>
+              {currentNode.action && (
+                <button type="button" onClick={runAction} className={styles.actionButton}>
+                  {currentNode.action.type === "handoff" ? (
+                    <SmartToyOutlinedIcon fontSize="small" />
+                  ) : (
+                    <SendIcon fontSize="small" />
+                  )}
+                  <span>
+                    {currentNode.action.type === "handoff"
+                      ? "Conversar com a Ada"
+                      : currentNode.action.label}
+                  </span>
+                </button>
+              )}
+            </div>
+          ) : (
+            <form className={styles.freeChatForm} onSubmit={submitFreeMessage}>
+              <input
+                type="text"
+                value={freeInput}
+                onChange={(event) => setFreeInput(event.target.value)}
+                placeholder="Digite sua mensagem para a Ada"
+                aria-label="Mensagem para Ada"
+              />
+              <button type="submit" aria-label="Enviar mensagem">
+                <SendIcon fontSize="small" />
               </button>
-            )}
-          </div>
+            </form>
+          )}
         </section>
       )}
 
