@@ -146,6 +146,60 @@ Para rodar o sistema completo localmente (frontend, backend e banco de dados), b
 
 ---
 
+## Chatbot do Widget e Ada
+
+O frontend possui dois modos de atendimento no componente `src/components/Chatbot/ChatbotWidget.jsx`:
+
+- **Chatbot guiado:** usa uma árvore de decisão carregada de `GET /api/chatbot/tree`. Se a API não responder, o widget usa uma árvore local de fallback.
+- **Conversa livre com a Ada:** quando o usuário clica em "Conversar com a Ada" no Hero ou chega em um ponto do widget que antes encaminharia para atendente, o chat muda para uma caixa de texto livre.
+
+A Ada usa a imagem `assets/hero/AdaHome.png` como personagem visual nas mensagens do bot.
+
+### Fluxo de resposta
+
+1. O usuário digita uma mensagem livre para a Ada.
+2. O frontend tenta enviar a mensagem para `POST /api/chatbot/llm`.
+3. Se o backend estiver configurado com OpenAI, a resposta vem da API generativa.
+4. Se o backend estiver indisponível ou sem `OPENAI_API_KEY`, o frontend usa o fallback local em `src/services/adaNlpChatbot.js`.
+
+O fallback local aplica uma abordagem simples de PLN/ML:
+
+- normalização do texto;
+- remoção de acentos;
+- tokenização;
+- remoção de stopwords;
+- classificação de intenções por exemplos treinados localmente;
+- resposta contextual para temas como orçamento, site, acessibilidade, suporte, sistema e integrações.
+
+### Configuração do backend usado pelo frontend
+
+Por padrão, o frontend usa:
+
+- `http://localhost:3001/api` em ambiente local;
+- `http://apiadacompany.duckdns.org/api` fora do localhost.
+
+Para apontar para outro backend, crie um arquivo `.env` no frontend com:
+
+```env
+VITE_API_URL=http://localhost:3001/api
+```
+
+### Testes do chatbot local
+
+```bash
+npm run lint
+npm test -- --run src/services/adaNlpChatbot.test.js
+```
+
+No Windows/PowerShell, se `npm` for bloqueado pela política de execução, use:
+
+```bash
+npm.cmd run lint
+npm.cmd test -- --run src/services/adaNlpChatbot.test.js
+```
+
+---
+
 ## 🚦 Integração e Entrega Contínua (CI/CD)
 
 O projeto utiliza um pipeline automatizado com GitHub Actions para o frontend, localizado em `.github/workflows/ci-frontend.yml`.
