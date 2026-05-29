@@ -513,3 +513,41 @@ Para dúvidas ou problemas:
 - Abra uma issue no repositório correspondente
 - Entre em contato com a equipe de desenvolvimento
 - Consulte a documentação da API em `/docs` (Swagger) 
+
+---
+
+## Testes Robot Framework
+
+Os testes locais de interface ficam em `robot/tests` e usam Robot Framework com SeleniumLibrary.
+
+Pre-requisitos:
+
+- Python instalado e disponivel no PATH
+- Google Chrome instalado
+- aplicacao frontend rodando localmente
+
+Instalacao das dependencias:
+
+```bash
+pip install -r robot-requirements.txt
+```
+
+Subir o frontend:
+
+```bash
+npm run dev
+```
+
+Executar os testes:
+
+```bash
+robot -d robot/results robot/tests
+```
+
+Executar apontando para outra URL:
+
+```bash
+robot -d robot/results -v FRONTEND_URL:http://localhost:5173 robot/tests
+```
+
+Ao final da execucao, o Robot gera `log.html`, `report.html` e `output.xml` dentro de `robot/results`.
