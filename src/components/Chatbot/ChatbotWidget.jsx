@@ -6,6 +6,8 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SendIcon from "@mui/icons-material/Send";
 import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
 import { getImageUrl } from "../../utils";
 import { getAdaResponse } from "../../services/adaNlpChatbot";
 import styles from "./ChatbotWidget.module.css";
@@ -192,6 +194,45 @@ export default function ChatbotWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const panelRef = useRef(null);
 
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.lang = "pt-BR";
+      recognition.interimResults = false;
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setFreeInput(transcript);
+        submitFreeMessage(null, transcript);
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+  }, []);
+
+  function toggleListening() {
+    if (isListening) {
+      recognitionRef.current?.stop();
+    } else {
+      recognitionRef.current?.start();
+      setIsListening(true);
+    }
+  }
+
   const currentNode = useMemo(
     () => tree.nodes[currentNodeId] || tree.nodes[tree.rootNodeId],
     [currentNodeId, tree],
@@ -317,10 +358,10 @@ export default function ChatbotWidget() {
     return payload.data?.text;
   }
 
-  async function submitFreeMessage(event) {
-    event.preventDefault();
+  async function submitFreeMessage(event, textOverride) {
+    if (event) event.preventDefault();
 
-    const text = freeInput.trim();
+    const text = (textOverride || freeInput).trim();
     if (!text) return;
 
     const userMessage = {
