@@ -201,8 +201,39 @@
   border-top: 1px solid rgba(25, 55, 109, 0.12);
   background: #ffffff;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 44px;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
   gap: 8px;
+}
+
+.micButton {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(79, 81, 212, 0.26);
+  border-radius: 8px;
+  background: transparent;
+  color: #4f51d4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.micButton:hover {
+  background: rgba(79, 81, 212, 0.08);
+}
+
+.micButton.listening {
+  background: #ff4d4f;
+  color: white;
+  border-color: #ff4d4f;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 77, 79, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 79, 0); }
 }
 
 .freeChatForm input {

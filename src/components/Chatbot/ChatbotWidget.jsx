@@ -458,14 +458,24 @@ export default function ChatbotWidget() {
             </div>
           ) : (
             <form className={styles.freeChatForm} onSubmit={submitFreeMessage}>
+              <button
+                type="button"
+                className={`${styles.micButton} ${isListening ? styles.listening : ""}`}
+                onClick={toggleListening}
+                aria-label={isListening ? "Parar de ouvir" : "Falar mensagem"}
+                title={isListening ? "Parar de ouvir" : "Falar mensagem"}
+              >
+                {isListening ? <MicOffIcon fontSize="small" /> : <MicIcon fontSize="small" />}
+              </button>
               <input
                 type="text"
                 value={freeInput}
                 onChange={(event) => setFreeInput(event.target.value)}
-                placeholder="Digite sua mensagem para a Ada"
+                placeholder={isListening ? "Ouvindo..." : "Digite sua mensagem para a Ada"}
                 aria-label="Mensagem para Ada"
+                disabled={isListening}
               />
-              <button type="submit" aria-label="Enviar mensagem">
+              <button type="submit" aria-label="Enviar mensagem" disabled={isListening}>
                 <SendIcon fontSize="small" />
               </button>
             </form>

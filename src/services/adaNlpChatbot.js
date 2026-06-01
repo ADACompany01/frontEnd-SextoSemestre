@@ -154,59 +154,129 @@ function tokenize(text) {
 }
 
 function trainModel(trainingIntents = intents) {
-  const vocabulary = new Set();
-  const model = trainingIntents.map((intent) => {
-    const tokens = intent.examples.flatMap(tokenize);
-    const frequencies = tokens.reduce((acc, token) => {
-      vocabulary.add(token);
-      acc[token] = (acc[token] || 0) + 1;
-      return acc;
-    }, {});
+  const documents = [];
+  const vocabularySet = new Set();
+  const df = {};
 
-    return {
-      ...intent,
-      frequencies,
-      totalTokens: tokens.length,
-    };
+  trainingIntents.forEach((intent) => {
+    intent.examples.forEach((example) => {
+      const tokens = tokenize(example);
+      const uniqueTokens = [...new Set(tokens)];
+
+      uniqueTokens.forEach((t) => {
+        vocabularySet.add(t);
+        df[t] = (df[t] || 0) + 1;
+      });
+
+      documents.push({
+        tokens,
+        intentName: intent.name,
+      });
+    });
+  });
+
+  const vocabulary = Array.from(vocabularySet);
+  const N = documents.length;
+
+  const idf = {};
+  vocabulary.forEach((t) => {
+    idf[t] = Math.log(N / (df[t] || 1)) + 1;
+  });
+
+  const vectorize = (tokens) => {
+    const vec = new Array(vocabulary.length).fill(0);
+    const tf = {};
+    tokens.forEach((t) => {
+      tf[t] = (tf[t] || 0) + 1;
+    });
+
+    let normSq = 0;
+    vocabulary.forEach((t, i) => {
+      if (tf[t]) {
+        const tfidfValue = tf[t] * idf[t];
+        vec[i] = tfidfValue;
+        normSq += tfidfValue * tfidfValue;
+      }
+    });
+
+    const norm = Math.sqrt(normSq);
+    if (norm > 0) {
+      for (let i = 0; i < vec.length; i++) {
+        vec[i] /= norm;
+      }
+    }
+    return vec;
+  };
+
+  const X = documents.map((doc) => vectorize(doc.tokens));
+
+  const models = {};
+  trainingIntents.forEach((intent) => {
+    const y = documents.map((doc) => (doc.intentName === intent.name ? 1 : -1));
+
+    const w = new Array(vocabulary.length).fill(0);
+    let b = 0;
+    const epochs = 200;
+    const lambda = 0.01;
+    const lr = 0.05;
+
+    for (let epoch = 0; epoch < epochs; epoch++) {
+      for (let i = 0; i < X.length; i++) {
+        const dot = X[i].reduce((sum, val, j) => sum + val * w[j], 0) + b;
+        if (y[i] * dot >= 1) {
+          for (let j = 0; j < w.length; j++) {
+            w[j] -= lr * (lambda * w[j]);
+          }
+        } else {
+          for (let j = 0; j < w.length; j++) {
+            w[j] -= lr * (lambda * w[j] - y[i] * X[i][j]);
+          }
+          b -= lr * -y[i];
+        }
+      }
+    }
+    models[intent.name] = { w, b };
   });
 
   return {
-    vocabulary: Array.from(vocabulary),
-    intents: model,
+    vocabulary,
+    idf,
+    vectorize,
+    models,
+    intents: trainingIntents,
   };
 }
 
 const trainedModel = trainModel();
 
-function scoreIntent(tokens, intent, vocabularySize) {
-  if (!tokens.length) return Number.NEGATIVE_INFINITY;
-
-  const denominator = intent.totalTokens + vocabularySize;
-  return tokens.reduce((score, token) => {
-    const frequency = intent.frequencies[token] || 0;
-    return score + Math.log((frequency + 1) / denominator);
-  }, Math.log(1 / intents.length));
-}
-
 function classifyIntent(message, model = trainedModel) {
   const tokens = tokenize(message);
-  const vocabularySize = Math.max(model.vocabulary.length, 1);
 
-  const ranked = model.intents
-    .map((intent) => ({
-      intent,
-      score: scoreIntent(tokens, intent, vocabularySize),
-    }))
-    .sort((a, b) => b.score - a.score);
-
-  const best = ranked[0];
-  const second = ranked[1];
-  const confidence = best && second ? Math.min(0.99, Math.max(0, best.score - second.score) / 3) : 0;
-
-  if (!best || !tokens.length || confidence < 0.08) {
+  if (!tokens.length) {
     return {
       name: "fallback",
-      confidence,
+      confidence: 0,
+    };
+  }
+
+  const x = model.vectorize(tokens);
+
+  const scores = model.intents.map((intent) => {
+    const svm = model.models[intent.name];
+    const score = x.reduce((sum, val, j) => sum + val * svm.w[j], 0) + svm.b;
+    return { intent, score };
+  });
+
+  scores.sort((a, b) => b.score - a.score);
+
+  const best = scores[0];
+  const second = scores[1];
+  const confidence = best && second ? Math.min(0.99, Math.max(0, best.score - second.score) / 2) : 0;
+
+  if (best.score < 0 || confidence < 0.05) {
+    return {
+      name: "fallback",
+      confidence: 0,
     };
   }
 
