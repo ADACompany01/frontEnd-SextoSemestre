@@ -3,6 +3,9 @@ name: Frontend CI/CD - Build, Versionamento e Imagem Dockerhub
 on:
   push:
     branches:
+      - '**'
+  pull_request:
+    branches:
       - main
   workflow_dispatch:
 
