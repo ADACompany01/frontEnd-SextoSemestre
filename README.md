@@ -5,9 +5,9 @@
 # ADA Company - Projeto Final
 
 <p align="center">
-  <a href="http://apiadacompany.duckdns.org:8080"><img src="https://img.shields.io/badge/Frontend-Online-green" /></a>
+  <a href="http://adacompany.duckdns.org"><img src="https://img.shields.io/badge/Frontend-Online-green" /></a>
   <a href="http://apiadacompany.duckdns.org/api"><img src="https://img.shields.io/badge/Backend-Online-blue" /></a>
-  <a href="http://apiadacompany.duckdns.org:8080"><img src="https://img.shields.io/badge/Deploy-Azure%20VM-0078D4" /></a>
+  <a href="http://adacompany.duckdns.org"><img src="https://img.shields.io/badge/Deploy-Azure%20VM-0078D4" /></a>
 </p>
 
 ---
@@ -484,7 +484,7 @@ Content-Type: application/json
 
 ## 🌐 Links das Aplicações Publicadas
 
-- **Frontend:** [http://apiadacompany.duckdns.org:8080](http://apiadacompany.duckdns.org:8080)
+- **Frontend:** [http://adacompany.duckdns.org](http://adacompany.duckdns.org)
 - **Backend (API):** [http://apiadacompany.duckdns.org/api](http://apiadacompany.duckdns.org/api)
 - **Infraestrutura:** Azure VM — container `web-frontend` (porta 8080) na rede `ada-net`
 
