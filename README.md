@@ -5,8 +5,9 @@
 # ADA Company - Projeto Final
 
 <p align="center">
-  <a href="https://newadacompany-3drnxk22f-ada-companys-projects.vercel.app/"><img src="https://img.shields.io/badge/Frontend-Online-green" /></a>
-  <a href="https://backend-adacompany.onrender.com/"><img src="https://img.shields.io/badge/Backend-Online-blue" /></a>
+  <a href="http://apiadacompany.duckdns.org:8080"><img src="https://img.shields.io/badge/Frontend-Online-green" /></a>
+  <a href="http://apiadacompany.duckdns.org/api"><img src="https://img.shields.io/badge/Backend-Online-blue" /></a>
+  <a href="http://apiadacompany.duckdns.org:8080"><img src="https://img.shields.io/badge/Deploy-Azure%20VM-0078D4" /></a>
 </p>
 
 ---
@@ -88,11 +89,12 @@ Sistema completo para gestão de serviços, clientes e funcionários, com interf
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Frontend:** React + Vite, CSS Modules, Nginx
-- **Backend:** NestJS, TypeScript, Sequelize, JWT, Swagger
-- **Banco de Dados:** PostgreSQL
-- **Infraestrutura:** Docker, Docker Compose
-- **Ferramentas:** Git, GitHub, Vercel, Render
+- **Frontend:** React + Vite, TypeScript, CSS Modules, Nginx
+- **Backend:** NestJS 11, TypeScript, Sequelize, JWT, Swagger
+- **Banco de Dados:** PostgreSQL 15 + MongoDB 7 + AWS DynamoDB (logs)
+- **PLN / IA:** Web Speech API (reconhecimento de voz pt-BR), OpenAI API (chatbot Ada), fallback NLP local (`adaNlpChatbot.js`)
+- **Infraestrutura:** Docker, Docker Compose, Azure VM
+- **Ferramentas:** Git, GitHub Actions (CI/CD), Docker Hub
 
 ---
 
@@ -205,19 +207,21 @@ npm.cmd test -- --run src/services/adaNlpChatbot.test.js
 O projeto utiliza um pipeline automatizado com GitHub Actions para o frontend, localizado em `.github/workflows/ci-frontend.yml`.
 
 **Principais etapas automatizadas:**
-- Instalação de dependências do frontend
-- Execução de testes automatizados (placeholder, pode ser expandido)
-- Build do código frontend
-- Versionamento semântico automático e criação de tags
-- Build e push de imagens Docker do frontend para o Docker Hub
-- Deploy automático do frontend na Vercel
+- Instalação de dependências e lint (ESLint)
+- Execução de testes automatizados e cobertura
+- Build do projeto Vite
+- Versionamento semântico automático e criação de tags git
+- Build e push de imagem Docker para o Docker Hub (`ada-company-frontend`)
+- Deploy automático na **Azure VM** via SSH: sobe o container `web-frontend` na porta 8080
 - Notificações por e-mail em caso de falha
-- Uso de secrets para credenciais sensíveis
-- Cache de build para acelerar execuções
+- Uso de secrets para credenciais sensíveis (`AZURE_VM_HOST`, `AZURE_VM_USER`, `AZURE_VM_PRIVATE_KEY`)
+- Cache de camadas Docker para acelerar o build
+
+> **Nota:** o deploy na Vercel está comentado no pipeline. O ambiente de produção ativo é a Azure VM.
 
 **Resumo do fluxo:**
-1. Build, teste, versionamento e publicação da imagem Docker do frontend.
-2. Deploy automático do frontend na Vercel ao criar uma nova versão.
+1. Build, lint, testes e publicação da imagem Docker.
+2. Deploy automático na Azure VM ao criar nova versão (container `web-frontend` com `--restart always`, porta 8080:80).
 3. Notificações automáticas por e-mail em caso de falha em qualquer etapa.
 
 Para mais detalhes, consulte o arquivo de workflow `.github/workflows/ci-frontend.yml` no repositório.
@@ -480,8 +484,9 @@ Content-Type: application/json
 
 ## 🌐 Links das Aplicações Publicadas
 
-- **Frontend:** [https://newadacompany.vercel.app/](https://newadacompany.vercel.app/)
-- **Backend:** [https://backend-adacompany.onrender.com/api](https://backend-adacompany.onrender.com/api)
+- **Frontend:** [http://apiadacompany.duckdns.org:8080](http://apiadacompany.duckdns.org:8080)
+- **Backend (API):** [http://apiadacompany.duckdns.org/api](http://apiadacompany.duckdns.org/api)
+- **Infraestrutura:** Azure VM — container `web-frontend` (porta 8080) na rede `ada-net`
 
 ---
 
